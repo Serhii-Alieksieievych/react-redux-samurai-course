@@ -11,23 +11,31 @@ import News from './components/News/News';
 import Music from './components/Music/Music';
 import Settings from './components/Settings/Settings';
 
-const App = ({ appState, addPost, changeCurrentPostArea, sendMessage, changeCurrentMessage }) => {
-  const { dialogsState, profileState} = appState;
+const App = ({ appStore }) => {
+  const { dialogsState, profileState } = appStore.getState();
   return (
     <div className="app-wrapper">
       <Header />
       <Navbar />
       <div className="app-wrapper-content">
         <Routes>
-          <Route path="/profile" element={<Profile profileState={profileState} addPost={addPost} changeCurrentPostArea={changeCurrentPostArea}/>}/>
+          <Route
+            path="/profile"
+            element={
+              <Profile
+                profileState={profileState}
+                dispatch={appStore.dispatch.bind(appStore)}
+              />
+            }
+          />
           <Route
             path="/dialogs"
             element={
               <Dialogs
                 dialogsState={dialogsState}
                 messagesArr={dialogsState.messagesArr}
-                sendMessage={sendMessage}
-                changeCurrentMessage={changeCurrentMessage}
+                sendMessage={appStore.sendMessage.bind(appStore)}
+                changeCurrentMessage={appStore.changeCurrentMessage.bind(appStore)}
               />
             }
           />
