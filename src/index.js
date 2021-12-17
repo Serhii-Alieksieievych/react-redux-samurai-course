@@ -11,7 +11,7 @@ export const rerenderEntrieTree = (store) => {
         <React.StrictMode>
           <BrowserRouter>
             <App
-                appStore={store}
+                store={store}
             />
           </BrowserRouter>
         </React.StrictMode>,

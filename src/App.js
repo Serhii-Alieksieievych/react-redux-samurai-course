@@ -11,8 +11,8 @@ import News from './components/News/News';
 import Music from './components/Music/Music';
 import Settings from './components/Settings/Settings';
 
-const App = ({ appStore }) => {
-  const { dialogsState, profileState } = appStore.getState();
+const App = ({ store }) => {
+  const { dialogsState, profileState } = store.getState();
   return (
     <div className="app-wrapper">
       <Header />
@@ -24,7 +24,7 @@ const App = ({ appStore }) => {
             element={
               <Profile
                 profileState={profileState}
-                dispatch={appStore.dispatch.bind(appStore)}
+                dispatch={store.dispatch.bind(store)}
               />
             }
           />
@@ -34,8 +34,7 @@ const App = ({ appStore }) => {
               <Dialogs
                 dialogsState={dialogsState}
                 messagesArr={dialogsState.messagesArr}
-                sendMessage={appStore.sendMessage.bind(appStore)}
-                changeCurrentMessage={appStore.changeCurrentMessage.bind(appStore)}
+                dispatch={store.dispatch.bind(store)}
               />
             }
           />
