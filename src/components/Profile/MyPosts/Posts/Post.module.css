@@ -1,0 +1,9 @@
+.item{
+    display: flex;
+    margin: 10px 0;
+}
+.avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}

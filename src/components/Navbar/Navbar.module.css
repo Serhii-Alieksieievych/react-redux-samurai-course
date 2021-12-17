@@ -1,0 +1,17 @@
+.nav {
+    grid-area: n;
+    background-color: teal;
+}
+
+.item {
+    color: #fff;
+}
+
+.link {
+    text-decoration: none;
+    color: white;
+}
+
+.activeLink{
+    color: goldenrod;
+}

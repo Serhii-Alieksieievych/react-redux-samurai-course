@@ -1,0 +1,13 @@
+.message{
+    padding: 5px;
+    border: black solid 1px;
+    margin: 10px;
+}
+
+.outer {
+    align-self: flex-start;
+}
+
+.inner {
+    align-self: flex-end;
+}
