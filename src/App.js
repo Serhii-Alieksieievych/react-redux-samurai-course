@@ -21,17 +21,13 @@ const App = ({ state, store}) => {
           <Route
             path="/profile"
             element={
-              <Profile
-                store={store}
-              />
+              <Profile />
             }
           />
           <Route
             path="/dialogs"
             element={
-              <DialogsContainer
-                store={store}
-              />
+              <DialogsContainer />
             }
           />
           <Route path="/news" element={<News />}/>
