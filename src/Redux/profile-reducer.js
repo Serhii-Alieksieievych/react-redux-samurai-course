@@ -7,7 +7,16 @@ export const changePostActionCreator = (text) => ({
     newText: text,
 })
 
-const profileReducer = (action, state) => {
+const initialState = {
+    currentPostArea: '',
+    postsArr: [
+        { id: 1, message: `post-opost`, likesCount: 0 },
+        { id: 2, message: `post-pos`, likesCount: 0 },
+        { id: 3, message: `post-opos`, likesCount: 0 },
+    ],
+}
+
+const profileReducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_POST:
             let newPost = {
@@ -20,7 +29,8 @@ const profileReducer = (action, state) => {
         case UPDATE_NEW_POST_TEXT:
             state.currentPostArea = action.newText;
             return state;
-        default: return state;
+        default:
+            return state;
     }
 }
 

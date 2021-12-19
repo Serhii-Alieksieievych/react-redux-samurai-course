@@ -2,33 +2,31 @@ import React, { useRef } from "react";
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
 import classes from './Dialogs.module.css';
-import { changeNewMessageActionCreator, sendMessageActionCreator } from "../../Redux/dialogs-reducer";
 
-const Dialogs = ({ dialogsState, messagesArr, dispatch }) => {
+const Dialogs = ({ sendMessage, changeMessage, dialogs, messages }) => {
 
     const messageArea = useRef('')
 
     const sendMessageHandler = (e) =>{
         e.preventDefault();
-        dispatch(sendMessageActionCreator());
-        dispatch(changeNewMessageActionCreator(''));
+        sendMessage()
         messageArea.current.value = '';
     }
 
     const changeMessageHandler = () => {
-        dispatch(changeNewMessageActionCreator(messageArea.current.value))
-        messageArea.current.value = dialogsState.currentMessage;
+        const text = messageArea.current.value
+        changeMessage(text)
     }
     return (
         <div className={classes.dialogs}>
             <div className={classes.dialogsItems}>
-                {dialogsState.dialogsArr.map(dialog=>{
+                {dialogs.map(dialog=>{
                     const {id, name} = dialog;
                     return <DialogItem id={id} key={id} name={name}/>
                 })}
             </div>
             <div className={classes.messages}>
-                {messagesArr.map(message => <Message
+                {messages.map(message => <Message
                     key={message.id}
                     id={message.id}
                     message={message.message}
