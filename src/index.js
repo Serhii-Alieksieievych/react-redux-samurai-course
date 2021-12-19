@@ -5,17 +5,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
-import MyContext from './storeContext';
+import { Provider } from 'react-redux';
 
 export const rerenderEntrieTree = () => {
     ReactDOM.render(
         <React.StrictMode>
           <BrowserRouter>
-            <MyContext.Provider value={store}>
-            <App
-                store={store}
-            />
-            </MyContext.Provider>
+            <Provider store={store}>
+            <App />
+            </Provider>
           </BrowserRouter>
         </React.StrictMode>,
         document.getElementById('root')

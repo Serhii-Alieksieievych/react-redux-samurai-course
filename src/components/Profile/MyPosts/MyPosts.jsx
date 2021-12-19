@@ -3,7 +3,7 @@ import classes from './MyPosts.module.css';
 import Post from "./Posts/Post";
 
 
-const MyPosts = ({ addPost, changePost, postsArr }) => {
+const MyPosts = ({ addPost, changePost, posts }) => {
   const textArea = useRef('')
   const changePostHandler = () => {
     changePost(textArea.current.value);
@@ -25,7 +25,7 @@ const MyPosts = ({ addPost, changePost, postsArr }) => {
       </form>
       <div className={classes.posts}>
         <h3>Posts</h3>
-        {postsArr.map(post => <Post
+        {posts.map(post => <Post
           id={post.id}
           key={post.id}
           message={post.message}
