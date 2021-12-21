@@ -3,14 +3,12 @@ import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
 import classes from './Dialogs.module.css';
 
-const Dialogs = ({ sendMessage, changeMessage, dialogs, messages }) => {
-
+const Dialogs = ({ sendMessage, changeMessage, dialogs, messages, currentMessage }) => {
     const messageArea = useRef('')
 
     const sendMessageHandler = (e) =>{
         e.preventDefault();
         sendMessage()
-        messageArea.current.value = '';
     }
 
     const changeMessageHandler = () => {
@@ -34,7 +32,7 @@ const Dialogs = ({ sendMessage, changeMessage, dialogs, messages }) => {
                 />)}
             </div>
             <form onSubmit={sendMessageHandler} className={classes.form}>
-                <textarea ref={messageArea} onChange={changeMessageHandler}/>
+                <textarea value={currentMessage} ref={messageArea} onChange={changeMessageHandler}/>
                 <button>Відправити повідомлення</button>
             </form>
         </div>

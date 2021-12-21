@@ -39,6 +39,14 @@ const Navbar = () => {
             </div>
             <div className={classes.item}>
                 <Link
+                    to="trashcats"
+                    className={classes.link}
+                >
+                    Trashcats
+                </Link>
+            </div>
+            <div className={classes.item}>
+                <Link
                     to="settings"
                     className={classes.link}
                 >

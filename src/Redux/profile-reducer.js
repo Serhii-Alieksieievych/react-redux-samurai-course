@@ -24,11 +24,9 @@ const profileReducer = (state = initialState, action) => {
                 message: state.currentPostArea,
                 likesCount: 0,
             }
-            state.postsArr.push(newPost);
-            return state;
+            return {...state, postsArr: [...state.postsArr, newPost], currentPostArea: ''};
         case UPDATE_NEW_POST_TEXT:
-            state.currentPostArea = action.newText;
-            return state;
+            return {...state, currentPostArea: action.newText};
         default:
             return state;
     }
