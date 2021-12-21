@@ -1,32 +1,34 @@
 
 import { connect } from "react-redux";
-import { followActionCreator, setCurrentPageAC, setStateActionCreator, unfollowActionCreator } from "../../Redux/trashcats-reducer";
+import { follow, setCurrentPage, setState, toggleIsFetching, unfollow } from "../../Redux/trashcats-reducer";
 import axios from "axios";
 import React from "react";
-import classes from './Trashcats.module.css';
-import userPhoto from "../../assets/img/Opossums.jpg";
+import { Grid } from 'svg-loaders-react'
 import Trashcats from "./Trashcats";
 
 class TrashcatsAPIComponent extends React.Component {
     componentDidMount() {
+        this.props.toggleIsFetching(true);
         axios.get('https://social-network.samuraijs.com/api/1.0/users').then(resp => {
-            this.props.setTrashcats(resp.data.items, resp.data.totalCount)
+            this.props.toggleIsFetching(false)
+            this.props.setState(resp.data.items, resp.data.totalCount)
+            
         })
     }
     onPageChanges = (span) => {
-        {
-            axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${span}`).then(resp => {
-                this.props.setTrashcats(resp.data.items, resp.data.totalCount)
-            })
-            this.props.setCurrentPage(+span)
-
-        }
+        this.props.toggleIsFetching(true);
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${span}`).then(resp => {
+            this.props.setState(resp.data.items, resp.data.totalCount)
+            this.props.toggleIsFetching(false);
+        })
+        this.props.setCurrentPage(+span)
     }
     render() {
-        const { trashcats, follow, unfollow, totalCount, pageSize, currentPage } = this.props;
+        const { trashcats, follow, unfollow, totalCount, pageSize, currentPage, isFetching } = this.props;
         
-        return (
-            <Trashcats
+        return ( isFetching 
+            ? <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', height: '90vh'}}><Grid /></div>
+            : <Trashcats
                 trashcats={trashcats}
                 follow={follow}
                 unfollow={unfollow}
@@ -34,7 +36,7 @@ class TrashcatsAPIComponent extends React.Component {
                 pageSize={pageSize}
                 currentPage={currentPage}
                 onPageChanges={this.onPageChanges}
-            />
+            />  
         )
     }
 } 
@@ -44,9 +46,10 @@ const mapStateToProps = (state) =>({
     totalCount: state.trashcatsPage.totalCount,
     pageSize: state.trashcatsPage.pageSize,
     currentPage: state.trashcatsPage.currentPage,
+    isFetching: state.trashcatsPage.isFetching,
 })
 
-const mapDispatchToProps = (dispatch) => ({
+/*const mapDispatchToProps = (dispatch) => ({
     follow: id => {
         dispatch(followActionCreator(id))
     },
@@ -58,9 +61,18 @@ const mapDispatchToProps = (dispatch) => ({
     },
     setCurrentPage: page => {
         dispatch(setCurrentPageAC(page))
+    },
+    toggleIsFetching: (isFetching)=>{
+        dispatch(toggleFetchingStatusAC(isFetching))
     }
-})
+})*/
 
-const TrashcatsContainer = connect(mapStateToProps, mapDispatchToProps)(TrashcatsAPIComponent);
+const TrashcatsContainer = connect(mapStateToProps, {
+    follow,
+    unfollow,
+    setState,
+    setCurrentPage,
+    toggleIsFetching,
+})(TrashcatsAPIComponent);
 
 export default TrashcatsContainer;
