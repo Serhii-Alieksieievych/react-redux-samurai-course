@@ -1,14 +1,17 @@
 const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST';
 const ADD_POST = 'ADD-POST';
+const SET_PROFILE_INFO = 'SET_PROFILE_INFO';
 
 export const addPostActionCreator = () => ({ type: "ADD-POST" })
 export const changePostActionCreator = (text) => ({
     type: UPDATE_NEW_POST_TEXT,
     newText: text,
 })
+export const setProfileInfo = (profileInfo) => ({type: SET_PROFILE_INFO, profileInfo})
 
 const initialState = {
     currentPostArea: '',
+    profileInfo: null,
     postsArr: [
         { id: 1, message: `post-opost`, likesCount: 0 },
         { id: 2, message: `post-pos`, likesCount: 0 },
@@ -27,6 +30,8 @@ const profileReducer = (state = initialState, action) => {
             return {...state, postsArr: [...state.postsArr, newPost], currentPostArea: ''};
         case UPDATE_NEW_POST_TEXT:
             return {...state, currentPostArea: action.newText};
+        case SET_PROFILE_INFO:
+            return {...state, profileInfo: action.profileInfo};
         default:
             return state;
     }

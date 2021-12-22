@@ -7,7 +7,7 @@ const Navbar = () => {
         <nav className={classes.nav}>
             <div className={classes.item}>
                 <Link
-                    to="profile"
+                    to="profile/me"
                     className={classes.link}
                 >
                     Profile

@@ -1,6 +1,7 @@
 import React from "react";
 import classes from './Trashcats.module.css';
 import userPhoto from "../../assets/img/Opossums.jpg"
+import { Link } from "react-router-dom";
 
 const Trashcats = ({
         trashcats,
@@ -39,7 +40,9 @@ const Trashcats = ({
                 {
                     trashcats.map(trashcat => (
                         <li className={classes.trashcatCard} key={trashcat.id}>
+                            <Link to={`../profile/${trashcat.id}`}>
                             <img src={trashcat.photos.small ? trashcat.photos.small : userPhoto} className={classes.avatar} />
+                            </Link>
                             {trashcat.followed
                                 ?
                                 <button

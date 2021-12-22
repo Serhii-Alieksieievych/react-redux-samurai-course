@@ -11,6 +11,7 @@ import News from './components/News/News';
 import Music from './components/Music/Music';
 import Settings from './components/Settings/Settings';
 import TrashcatsContainer from './components/Trashcats/TrashcatsContainer';
+import ProfileContainer from './components/Profile/ProfileContainer';
 
 const App = () => {
   return (
@@ -20,11 +21,24 @@ const App = () => {
       <div className="app-wrapper-content">
         <Routes>
           <Route
-            path="/profile"
+            path="profile"
             element={
-              <Profile />
+              <ProfileContainer />
             }
-          />
+          >
+            <Route
+              path=":userId"
+              element={
+                <ProfileContainer />
+              }
+            />
+              <Route
+                path="me"
+                element={
+                  <ProfileContainer />
+                }
+              />
+          </Route>
           <Route
             path="/dialogs"
             element={

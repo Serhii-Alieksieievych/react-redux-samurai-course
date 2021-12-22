@@ -1,4 +1,5 @@
 .avatarImg {
-  height: 100px;
-  width: 100px;
+  object-fit: cover;
+  height: 360px;
+  width: 320px;
 }
