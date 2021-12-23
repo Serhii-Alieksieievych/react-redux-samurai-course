@@ -9,7 +9,9 @@ import Trashcats from "./Trashcats";
 class TrashcatsAPIComponent extends React.Component {
     componentDidMount() {
         this.props.toggleIsFetching(true);
-        axios.get('https://social-network.samuraijs.com/api/1.0/users').then(resp => {
+        axios.get('https://social-network.samuraijs.com/api/1.0/users',
+            {withCredentials: true}    
+        ).then(resp => {
             this.props.toggleIsFetching(false)
             this.props.setState(resp.data.items, resp.data.totalCount)
             
@@ -17,15 +19,17 @@ class TrashcatsAPIComponent extends React.Component {
     }
     onPageChanges = (span) => {
         this.props.toggleIsFetching(true);
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${span}`).then(resp => {
+        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${span}`,
+            {withCredentials:true}
+        ).then(resp => {
             this.props.setState(resp.data.items, resp.data.totalCount)
             this.props.toggleIsFetching(false);
+            console.log(resp.data)
         })
         this.props.setCurrentPage(+span)
     }
     render() {
         const { trashcats, follow, unfollow, totalCount, pageSize, currentPage, isFetching } = this.props;
-        
         return ( isFetching 
             ? <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', height: '90vh'}}><Grid /></div>
             : <Trashcats

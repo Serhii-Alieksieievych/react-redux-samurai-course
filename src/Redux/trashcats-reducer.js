@@ -24,16 +24,16 @@ const trashcatsReducer = (state = initialState, action) => {
             return {
                 ...state, trashcats: state.trashcats.map(trashcat => {
                     return trashcat.id === action.id
-                        ? { ...trashcat, isFollowed: true }
-                        : trashcat;
+                        ? { ...trashcat, followed: true }
+                        : {...trashcat};
                 })};
         case UNFOLLOW:
             return {
                 ...state,
                 trashcats: state.trashcats.map(trashcat => {
                     return trashcat.id === action.id
-                        ? { ...trashcat, isFollowed: false }
-                        : trashcat;
+                        ? { ...trashcat, followed: false }
+                        : {...trashcat};
                 })};
 
         case SET_STATE:

@@ -2,6 +2,7 @@ import React from "react";
 import classes from './Trashcats.module.css';
 import userPhoto from "../../assets/img/Opossums.jpg"
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Trashcats = ({
         trashcats,
@@ -23,7 +24,7 @@ const Trashcats = ({
             <div className={classes.paginatorWrapper}>
                 {pageSpans.map(span => (
                     <span
-                        onClick={e => {
+                        onClick={() => {
                             onPageChanges(span)
                         }}
                         className={span == currentPage
@@ -47,14 +48,45 @@ const Trashcats = ({
                                 ?
                                 <button
                                     className={classes.btn}
-                                    onClick={() => unfollow(trashcat.id)}
+                                    onClick={() => {
+                                            axios.delete(
+                                                `https://social-network.samuraijs.com/api/1.0/follow/${trashcat.id}`,
+                                                {
+                                                    withCredentials: true,
+                                                    headers: {
+                                                        'API-KEY': '2684d674-512e-42f2-86c1-036ed91abbce'
+                                                    }
+                                                }
+                                            )
+                                                .then(resp => {
+                                                    if (resp.data.resultCode == 0) {
+                                                        unfollow(trashcat.id)
+                                                    }
+                                            })
+                                    }}
                                 >
                                     UNFOLLOW
                                 </button>
                                 :
                                 <button
                                     className={classes.btn}
-                                    onClick={() => follow(trashcat.id)}
+                                    onClick={() => {
+                                        axios.post(
+                                            `https://social-network.samuraijs.com/api/1.0/follow/${trashcat.id}`,
+                                            {},
+                                            {
+                                                withCredentials: true,
+                                                headers: {
+                                                    'API-KEY':'2684d674-512e-42f2-86c1-036ed91abbce'
+                                                }
+                                            }
+                                        )
+                                            .then(resp => {
+                                                if (resp.data.resultCode == 0) {
+                                                    follow(trashcat.id)
+                                                }
+                                            })
+                                    }}
                                 >
                                     FOLLOW
                                 </button>

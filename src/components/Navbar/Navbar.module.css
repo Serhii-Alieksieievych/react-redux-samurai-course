@@ -1,6 +1,7 @@
 .nav {
     grid-area: n;
     background-color: teal;
+    padding: 20px;
 }
 
 .item {
@@ -8,8 +9,15 @@
 }
 
 .link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-decoration: none;
     color: white;
+    padding: 5px;
+    height: 30px;
+    margin-bottom: 5px;
+    border: blanchedalmond solid 1px;
 }
 
 .activeLink{
