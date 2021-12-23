@@ -18,6 +18,13 @@
     height: 30px;
     margin-bottom: 5px;
     border: blanchedalmond solid 1px;
+    transition: all 0.3s;
+    background-color: rgba(0, 80, 120, 0);
+}
+
+.link:hover {
+    transform: scale(1.03, 1.03);
+    background-color: rgba(0, 80, 120, 0.4);
 }
 
 .activeLink{
