@@ -1,37 +1,55 @@
-
 import { connect } from "react-redux";
-import { follow, setCurrentPage, setState, toggleIsFetching, unfollow } from "../../Redux/trashcats-reducer";
-import axios from "axios";
+import {
+    follow,
+    setCurrentPage,
+    setState,
+    toggleIsFetching,
+    unfollow,
+    toggleFollowingStatus,
+} from "../../Redux/trashcats-reducer";
 import React from "react";
 import { Grid } from 'svg-loaders-react'
 import Trashcats from "./Trashcats";
+import { getUsers } from "../../api/api";
 
 class TrashcatsAPIComponent extends React.Component {
     componentDidMount() {
         this.props.toggleIsFetching(true);
-        axios.get('https://social-network.samuraijs.com/api/1.0/users',
-            {withCredentials: true}    
-        ).then(resp => {
+        getUsers().then(data => {
             this.props.toggleIsFetching(false)
-            this.props.setState(resp.data.items, resp.data.totalCount)
+            this.props.setState(data.items, data.totalCount)
             
         })
     }
-    onPageChanges = (span) => {
+    onPageChanges = (currentPage) => {
         this.props.toggleIsFetching(true);
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${span}`,
-            {withCredentials:true}
-        ).then(resp => {
-            this.props.setState(resp.data.items, resp.data.totalCount)
+        getUsers(currentPage).then(data => {
+            this.props.setState(data.items, data.totalCount)
             this.props.toggleIsFetching(false);
-            console.log(resp.data)
         })
-        this.props.setCurrentPage(+span)
+        this.props.setCurrentPage(+currentPage)
     }
     render() {
-        const { trashcats, follow, unfollow, totalCount, pageSize, currentPage, isFetching } = this.props;
+        const {
+            trashcats,
+            follow,
+            unfollow,
+            totalCount,
+            pageSize,
+            currentPage,
+            isFetching,
+            haveFollowingInProgress,
+            toggleFollowingStatus
+        } = this.props;
         return ( isFetching 
-            ? <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', height: '90vh'}}><Grid /></div>
+            ? <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '90vh'
+            }}>
+                <Grid />
+            </div>
             : <Trashcats
                 trashcats={trashcats}
                 follow={follow}
@@ -40,6 +58,8 @@ class TrashcatsAPIComponent extends React.Component {
                 pageSize={pageSize}
                 currentPage={currentPage}
                 onPageChanges={this.onPageChanges}
+                toggleFollowingStatus={toggleFollowingStatus}
+                haveFollowingInProgress={haveFollowingInProgress}
             />  
         )
     }
@@ -51,6 +71,7 @@ const mapStateToProps = (state) =>({
     pageSize: state.trashcatsPage.pageSize,
     currentPage: state.trashcatsPage.currentPage,
     isFetching: state.trashcatsPage.isFetching,
+    haveFollowingInProgress: state.trashcatsPage.haveFollowingInProgress,
 })
 
 /*const mapDispatchToProps = (dispatch) => ({
@@ -77,6 +98,7 @@ const TrashcatsContainer = connect(mapStateToProps, {
     setState,
     setCurrentPage,
     toggleIsFetching,
+    toggleFollowingStatus,
 })(TrashcatsAPIComponent);
 
 export default TrashcatsContainer;

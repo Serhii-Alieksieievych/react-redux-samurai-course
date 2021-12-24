@@ -3,19 +3,22 @@ const UNFOLLOW = 'UNFOLLOW';
 const SET_STATE = 'SET-STATE';
 const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 const TOGGLE_FETCHING_STATUS = 'TOGGLE_FETCHING_STATUS';
+const TOGGLE_FOLLOWING_STATUS = 'TOGGLE_FOLLOWING_STATUS'
 
 export const follow = (id) => ({ type: FOLLOW, id:id })
 export const unfollow = (id) => ({ type: UNFOLLOW, id:id })
-export const setState = (trashcats, totalCount) => ({ type: SET_STATE, trashcats:trashcats, totalCount:totalCount })
+export const setState = (trashcats, totalCount) => ({ type: SET_STATE, trashcats, totalCount })
 export const setCurrentPage = (page) => ({ type: SET_CURRENT_PAGE, currentPage: page })
-export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_FETCHING_STATUS, isFetching: isFetching })
+export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_FETCHING_STATUS, isFetching })
+export const toggleFollowingStatus = (id) => ({type: TOGGLE_FOLLOWING_STATUS, id})
 
 const initialState = {
     trashcats: [],
     totalCount: 0,
     pageSize: 10,
     currentPage: 1,
-    isFetching: true,
+    isFetching: false,
+    haveFollowingInProgress: [],
 }
 
 const trashcatsReducer = (state = initialState, action) => {
@@ -42,6 +45,10 @@ const trashcatsReducer = (state = initialState, action) => {
             return {...state, currentPage: action.currentPage}
         case TOGGLE_FETCHING_STATUS:
             return {...state, isFetching: action.isFetching}
+        case TOGGLE_FOLLOWING_STATUS:
+            return state.haveFollowingInProgress.some(id => id === action.id)
+                ? {...state, haveFollowingInProgress:state.haveFollowingInProgress.filter(id => id !== action.id)}
+                : {...state, haveFollowingInProgress:[...state.haveFollowingInProgress, action.id]}
         default:
             return state;
     }

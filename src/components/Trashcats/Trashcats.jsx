@@ -2,7 +2,7 @@ import React from "react";
 import classes from './Trashcats.module.css';
 import userPhoto from "../../assets/img/Opossums.jpg"
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { followAxios, unfollowAxios } from "../../api/api";
 
 const Trashcats = ({
         trashcats,
@@ -11,8 +11,10 @@ const Trashcats = ({
         totalCount,
         pageSize,
         currentPage,
-        onPageChanges
-}) => {
+        onPageChanges,
+        toggleFollowingStatus,
+        haveFollowingInProgress,
+    }) => {
     const pagesCount = Math.ceil(totalCount / pageSize);
     const pageSpans = [];
 
@@ -47,44 +49,33 @@ const Trashcats = ({
                             {trashcat.followed
                                 ?
                                 <button
+                                    disabled={haveFollowingInProgress.some(id => id === trashcat.id)}
                                     className={classes.btn}
                                     onClick={() => {
-                                            axios.delete(
-                                                `https://social-network.samuraijs.com/api/1.0/follow/${trashcat.id}`,
-                                                {
-                                                    withCredentials: true,
-                                                    headers: {
-                                                        'API-KEY': '2684d674-512e-42f2-86c1-036ed91abbce'
-                                                    }
+                                        toggleFollowingStatus(trashcat.id)
+                                        unfollowAxios(trashcat)
+                                            .then(data => {
+                                                if (data.resultCode == 0) {
+                                                    unfollow(trashcat.id)
                                                 }
-                                            )
-                                                .then(resp => {
-                                                    if (resp.data.resultCode == 0) {
-                                                        unfollow(trashcat.id)
-                                                    }
-                                            })
+                                                toggleFollowingStatus(trashcat.id)
+                                        })
                                     }}
                                 >
                                     UNFOLLOW
                                 </button>
                                 :
                                 <button
+                                    disabled={haveFollowingInProgress.some(id => id === trashcat.id)}
                                     className={classes.btn}
                                     onClick={() => {
-                                        axios.post(
-                                            `https://social-network.samuraijs.com/api/1.0/follow/${trashcat.id}`,
-                                            {},
-                                            {
-                                                withCredentials: true,
-                                                headers: {
-                                                    'API-KEY':'2684d674-512e-42f2-86c1-036ed91abbce'
-                                                }
-                                            }
-                                        )
-                                            .then(resp => {
-                                                if (resp.data.resultCode == 0) {
+                                        toggleFollowingStatus(trashcat.id)
+                                        followAxios(trashcat)
+                                            .then(data => {
+                                                if (data.resultCode == 0) {
                                                     follow(trashcat.id)
                                                 }
+                                                toggleFollowingStatus(trashcat.id)
                                             })
                                     }}
                                 >
