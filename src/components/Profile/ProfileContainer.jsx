@@ -4,7 +4,8 @@ import { setProfileInfo } from "../../Redux/profile-reducer";
 import Profile from "./Profile";
 import { Grid } from 'svg-loaders-react'
 import { useParams } from "react-router-dom";
-import { getProfileData } from "../../api/api";
+import { ProfileAPI } from "../../api/api";
+import { setProfile } from "../../Redux/profile-reducer";
 
 const withRouter = WrappedComponent => props => {
   const params = useParams();
@@ -21,9 +22,8 @@ const withRouter = WrappedComponent => props => {
 
 class ProfileContainer extends React.Component {
   componentDidMount(){
-    const userId = this.props.params.userId ? this.props.params.userId : 2;
-    getProfileData(userId).then(data => {
-      this.props.setProfileInfo(data)})} 
+    this.props.setProfile(this.props.params.userId)
+    } 
 
   render(){
     return(
@@ -47,4 +47,4 @@ class ProfileContainer extends React.Component {
 const mapStateToProps = (state) => ({
   profileInfo: state.profilePage.profileInfo,
 })
-export default connect(mapStateToProps,{setProfileInfo})(withRouter(ProfileContainer));
+export default connect(mapStateToProps,{setProfile})(withRouter(ProfileContainer));

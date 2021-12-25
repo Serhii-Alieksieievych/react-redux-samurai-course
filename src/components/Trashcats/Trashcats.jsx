@@ -2,7 +2,7 @@ import React from "react";
 import classes from './Trashcats.module.css';
 import userPhoto from "../../assets/img/Opossums.jpg"
 import { Link } from "react-router-dom";
-import { followAxios, unfollowAxios } from "../../api/api";
+import { FollowAPI } from "../../api/api";
 
 const Trashcats = ({
         trashcats,
@@ -52,14 +52,7 @@ const Trashcats = ({
                                     disabled={haveFollowingInProgress.some(id => id === trashcat.id)}
                                     className={classes.btn}
                                     onClick={() => {
-                                        toggleFollowingStatus(trashcat.id)
-                                        unfollowAxios(trashcat)
-                                            .then(data => {
-                                                if (data.resultCode == 0) {
-                                                    unfollow(trashcat.id)
-                                                }
-                                                toggleFollowingStatus(trashcat.id)
-                                        })
+                                        unfollow(trashcat)
                                     }}
                                 >
                                     UNFOLLOW
@@ -69,14 +62,7 @@ const Trashcats = ({
                                     disabled={haveFollowingInProgress.some(id => id === trashcat.id)}
                                     className={classes.btn}
                                     onClick={() => {
-                                        toggleFollowingStatus(trashcat.id)
-                                        followAxios(trashcat)
-                                            .then(data => {
-                                                if (data.resultCode == 0) {
-                                                    follow(trashcat.id)
-                                                }
-                                                toggleFollowingStatus(trashcat.id)
-                                            })
+                                        follow(trashcat)
                                     }}
                                 >
                                     FOLLOW

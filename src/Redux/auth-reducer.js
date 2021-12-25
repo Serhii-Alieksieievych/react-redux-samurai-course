@@ -1,3 +1,5 @@
+import { AuthAPI, ProfileAPI } from "../api/api";
+
 const SET_AUTH = 'SET_AUTH';
 const SET_SMALL_AVATAR = 'SET_SMALL_AVATAR';
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
@@ -31,6 +33,20 @@ export const toggleIsFetching = (isFetching) => (
         }
     }
 )
+
+export const checkAutorization = () => (dispatch) => {
+    AuthAPI.getAuthStatus().then(data => {
+        const isLogged = data.resultCode === 0 ? true : false;
+        const { id, login, email } = data.data;
+        dispatch(setAuthUserData(isLogged, id, email, login))
+        return id;
+    }).then(id => {
+        ProfileAPI.getProfileData(id).then(data => {
+            dispatch(setSmallAvatar(data.photos.small))
+            dispatch(toggleIsFetching(false))
+        })
+    })
+}
 
 const initialState = {
     userId: null,

@@ -1,3 +1,5 @@
+import { UsersAPI, FollowAPI } from "../api/api";
+
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
 const SET_STATE = 'SET-STATE';
@@ -12,10 +14,40 @@ export const setCurrentPage = (page) => ({ type: SET_CURRENT_PAGE, currentPage: 
 export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_FETCHING_STATUS, isFetching })
 export const toggleFollowingStatus = (id) => ({type: TOGGLE_FOLLOWING_STATUS, id})
 
+export const getUsers = (currentPage) => (dispatch) => {
+    dispatch(toggleIsFetching(true))
+    UsersAPI.getUsers(currentPage).then(data => {
+        dispatch(toggleIsFetching(false))
+        dispatch(setState(data.items, data.totalCount))
+    })
+};
+
+export const followTC = (trashcat) => (dispatch) => {
+    dispatch(toggleFollowingStatus(trashcat.id))
+    FollowAPI.followAxios(trashcat)
+        .then(data => {
+            if (data.resultCode == 0) {
+                dispatch(follow(trashcat.id))
+            }
+            dispatch(toggleFollowingStatus(trashcat.id))
+        })
+}
+
+export const unfollowTC = (trashcat) => (dispatch) => {
+    dispatch(toggleFollowingStatus(trashcat.id))
+    FollowAPI.unfollowAxios(trashcat)
+        .then(data => {
+            if (data.resultCode == 0) {
+                dispatch(unfollow(trashcat.id))
+            }
+            dispatch(toggleFollowingStatus(trashcat.id))
+        })
+}
+
 const initialState = {
     trashcats: [],
     totalCount: 0,
-    pageSize: 10,
+    pageSize: 12,
     currentPage: 1,
     isFetching: false,
     haveFollowingInProgress: [],

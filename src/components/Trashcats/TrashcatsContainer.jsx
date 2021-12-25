@@ -6,34 +6,26 @@ import {
     toggleIsFetching,
     unfollow,
     toggleFollowingStatus,
+    getUsers,
 } from "../../Redux/trashcats-reducer";
+import { followTC, unfollowTC } from "../../Redux/trashcats-reducer";
 import React from "react";
 import { Grid } from 'svg-loaders-react'
 import Trashcats from "./Trashcats";
-import { getUsers } from "../../api/api";
+
 
 class TrashcatsAPIComponent extends React.Component {
     componentDidMount() {
-        this.props.toggleIsFetching(true);
-        getUsers().then(data => {
-            this.props.toggleIsFetching(false)
-            this.props.setState(data.items, data.totalCount)
-            
-        })
+        this.props.getUsers()
     }
     onPageChanges = (currentPage) => {
-        this.props.toggleIsFetching(true);
-        getUsers(currentPage).then(data => {
-            this.props.setState(data.items, data.totalCount)
-            this.props.toggleIsFetching(false);
-        })
-        this.props.setCurrentPage(+currentPage)
+        this.props.getUsers(currentPage)
     }
     render() {
         const {
             trashcats,
-            follow,
-            unfollow,
+            followTC,
+            unfollowTC,
             totalCount,
             pageSize,
             currentPage,
@@ -52,8 +44,8 @@ class TrashcatsAPIComponent extends React.Component {
             </div>
             : <Trashcats
                 trashcats={trashcats}
-                follow={follow}
-                unfollow={unfollow}
+                follow={followTC}
+                unfollow={unfollowTC}
                 totalCount={totalCount}
                 pageSize={pageSize}
                 currentPage={currentPage}
@@ -93,12 +85,13 @@ const mapStateToProps = (state) =>({
 })*/
 
 const TrashcatsContainer = connect(mapStateToProps, {
-    follow,
-    unfollow,
+    followTC,
+    unfollowTC,
     setState,
     setCurrentPage,
     toggleIsFetching,
     toggleFollowingStatus,
+    getUsers,
 })(TrashcatsAPIComponent);
 
 export default TrashcatsContainer;

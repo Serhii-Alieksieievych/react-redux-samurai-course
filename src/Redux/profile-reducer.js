@@ -1,3 +1,5 @@
+import { ProfileAPI } from "../api/api";
+
 const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST';
 const ADD_POST = 'ADD-POST';
 const SET_PROFILE_INFO = 'SET_PROFILE_INFO';
@@ -8,6 +10,14 @@ export const changePostActionCreator = (text) => ({
     newText: text,
 })
 export const setProfileInfo = (profileInfo) => ({type: SET_PROFILE_INFO, profileInfo})
+
+export const setProfile = (id)=> (dispatch) =>{
+    const userId = id ? id : 2;
+    ProfileAPI.getProfileData(userId).then(data => {
+        dispatch(setProfileInfo(data))
+    })
+} 
+
 
 const initialState = {
     currentPostArea: '',
