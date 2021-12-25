@@ -11,6 +11,7 @@ import React from "react";
 import { Grid } from 'svg-loaders-react'
 import Trashcats from "./Trashcats";
 import { withAuthRedirect } from "../../hoc/withAuthRedirect";
+import { compose } from "redux";
 
 
 class TrashcatsAPIComponent extends React.Component {
@@ -83,14 +84,14 @@ const mapStateToProps = (state) =>({
     }
 })*/
 
-const TrashcatsContainer = connect(mapStateToProps, {
-    followTC,
-    unfollowTC,
-    setState,
-    setCurrentPage,
-    toggleIsFetching,
-    toggleFollowingStatus,
-    getUsers,
-})(withAuthRedirect(TrashcatsAPIComponent));
-
-export default TrashcatsContainer;
+export default compose(
+    connect(mapStateToProps, {
+        followTC,
+        unfollowTC,
+        setState,
+        setCurrentPage,
+        toggleIsFetching,
+        toggleFollowingStatus,
+        getUsers,
+    }),
+withAuthRedirect)(TrashcatsAPIComponent)

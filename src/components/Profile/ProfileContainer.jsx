@@ -5,6 +5,7 @@ import { Grid } from 'svg-loaders-react'
 import { useParams } from "react-router-dom";
 import { setProfile } from "../../Redux/profile-reducer";
 import { withAuthRedirect } from "../../hoc/withAuthRedirect";
+import { compose } from "redux";
 
 const withRouter = WrappedComponent => props => {
   const params = useParams();
@@ -42,8 +43,12 @@ class ProfileContainer extends React.Component {
   }
 }
 
-
 const mapStateToProps = (state) => ({
   profileInfo: state.profilePage.profileInfo,
 })
-export default connect(mapStateToProps, { setProfile })(withAuthRedirect(withRouter(ProfileContainer)));
+
+export default  compose(
+  withRouter,
+  withAuthRedirect,
+  connect(mapStateToProps, { setProfile })
+)(ProfileContainer)
