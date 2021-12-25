@@ -2,6 +2,7 @@ import React from "react";
 import MyPostsContainer from "./MyPosts/MyPostsContainer";
 import classes from './Profile.module.css';
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
+import { Navigate } from "react-router-dom";
 
 const Profile = (props) => {
   return (

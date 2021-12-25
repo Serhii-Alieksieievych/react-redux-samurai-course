@@ -2,8 +2,10 @@ import React, { useRef } from "react";
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
 import classes from './Dialogs.module.css';
+import { Navigate } from "react-router-dom";
 
-const Dialogs = ({ sendMessage, changeMessage, dialogs, messages, currentMessage }) => {
+const Dialogs = ({ sendMessage, changeMessage, dialogs, messages, currentMessage, isAuthorised }) => {
+   
     const messageArea = useRef('')
 
     const sendMessageHandler = (e) =>{

@@ -1,11 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
-import { setProfileInfo } from "../../Redux/profile-reducer";
 import Profile from "./Profile";
 import { Grid } from 'svg-loaders-react'
 import { useParams } from "react-router-dom";
-import { ProfileAPI } from "../../api/api";
 import { setProfile } from "../../Redux/profile-reducer";
+import { withAuthRedirect } from "../../hoc/withAuthRedirect";
 
 const withRouter = WrappedComponent => props => {
   const params = useParams();
@@ -47,4 +46,4 @@ class ProfileContainer extends React.Component {
 const mapStateToProps = (state) => ({
   profileInfo: state.profilePage.profileInfo,
 })
-export default connect(mapStateToProps,{setProfile})(withRouter(ProfileContainer));
+export default connect(mapStateToProps, { setProfile })(withAuthRedirect(withRouter(ProfileContainer)));

@@ -2,6 +2,7 @@ import React from "react";
 import classes from './Header.module.css';
 import userPhoto from "../../assets/img/Opossums.jpg";
 import { Grid } from 'svg-loaders-react';
+import { Link } from "react-router-dom";
 const Header = ( {isLogged, email, id, smallAvatarSRC, isFetching} ) => {
     return (
         <header className={classes.header}>
@@ -13,7 +14,7 @@ const Header = ( {isLogged, email, id, smallAvatarSRC, isFetching} ) => {
                     : <img src={userPhoto} alt="small_avatar" className={classes.ava} />}
                 {email} You are logged {id}
                 </div> 
-            : <div>Log in</div>}
+            : <Link to="login">Log in</Link>}
         </header>
     )
 }

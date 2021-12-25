@@ -1,8 +1,7 @@
 import React from "react";
 import classes from './Trashcats.module.css';
 import userPhoto from "../../assets/img/Opossums.jpg"
-import { Link } from "react-router-dom";
-import { FollowAPI } from "../../api/api";
+import { Link, Navigate } from "react-router-dom";
 
 const Trashcats = ({
         trashcats,
@@ -11,9 +10,9 @@ const Trashcats = ({
         totalCount,
         pageSize,
         currentPage,
-        onPageChanges,
-        toggleFollowingStatus,
+        getUsers,
         haveFollowingInProgress,
+        isAuthorised
     }) => {
     const pagesCount = Math.ceil(totalCount / pageSize);
     const pageSpans = [];
@@ -27,7 +26,7 @@ const Trashcats = ({
                 {pageSpans.map(span => (
                     <span
                         onClick={() => {
-                            onPageChanges(span)
+                            getUsers(span)
                         }}
                         className={span == currentPage
                             ? classes.activePaginator + ' ' + classes.span

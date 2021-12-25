@@ -1,10 +1,8 @@
 import { connect } from "react-redux";
 import {
-    follow,
     setCurrentPage,
     setState,
     toggleIsFetching,
-    unfollow,
     toggleFollowingStatus,
     getUsers,
 } from "../../Redux/trashcats-reducer";
@@ -12,14 +10,12 @@ import { followTC, unfollowTC } from "../../Redux/trashcats-reducer";
 import React from "react";
 import { Grid } from 'svg-loaders-react'
 import Trashcats from "./Trashcats";
+import { withAuthRedirect } from "../../hoc/withAuthRedirect";
 
 
 class TrashcatsAPIComponent extends React.Component {
     componentDidMount() {
         this.props.getUsers()
-    }
-    onPageChanges = (currentPage) => {
-        this.props.getUsers(currentPage)
     }
     render() {
         const {
@@ -31,7 +27,9 @@ class TrashcatsAPIComponent extends React.Component {
             currentPage,
             isFetching,
             haveFollowingInProgress,
-            toggleFollowingStatus
+            toggleFollowingStatus,
+            getUsers,
+            isAuthorised,
         } = this.props;
         return ( isFetching 
             ? <div style={{
@@ -49,9 +47,10 @@ class TrashcatsAPIComponent extends React.Component {
                 totalCount={totalCount}
                 pageSize={pageSize}
                 currentPage={currentPage}
-                onPageChanges={this.onPageChanges}
+                getUsers={getUsers}
                 toggleFollowingStatus={toggleFollowingStatus}
                 haveFollowingInProgress={haveFollowingInProgress}
+                isAuthorised={isAuthorised}
             />  
         )
     }
@@ -92,6 +91,6 @@ const TrashcatsContainer = connect(mapStateToProps, {
     toggleIsFetching,
     toggleFollowingStatus,
     getUsers,
-})(TrashcatsAPIComponent);
+})(withAuthRedirect(TrashcatsAPIComponent));
 
 export default TrashcatsContainer;
