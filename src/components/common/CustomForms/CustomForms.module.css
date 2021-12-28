@@ -1,0 +1,4 @@
+.error .textarea,
+.error .input {
+    border: red solid 2px;
+}

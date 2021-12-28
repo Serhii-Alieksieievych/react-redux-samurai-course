@@ -13,3 +13,14 @@ export const withAuthRedirect = (Component) => {
         return <Component {...props} />
     })
 }
+
+export const withBackAuthRedirect = (Component) => {
+    const mapStateToProps = (state) => ({
+        userId: state.auth.userId,
+    })
+
+    return connect(mapStateToProps)((props) => {
+        if (props.userId) return <Navigate to="/../profile/me" />
+        return <Component {...props} />
+    })
+}

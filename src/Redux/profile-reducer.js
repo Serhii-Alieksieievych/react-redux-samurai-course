@@ -7,7 +7,7 @@ const SET_STATUS = 'SET_STATUS';
 
 
 export const setStatus = (status) => ({type: SET_STATUS , status})
-export const addPostActionCreator = () => ({ type: "ADD-POST" })
+export const addPostActionCreator = (payload) => ({ type: "ADD-POST", payload })
 export const changePostActionCreator = (text) => ({
     type: UPDATE_NEW_POST_TEXT,
     newText: text,
@@ -54,7 +54,7 @@ const profileReducer = (state = initialState, action) => {
         case ADD_POST:
             let newPost = {
                 id: state.postsArr.length + 1,
-                message: state.currentPostArea,
+                message: action.payload,
                 likesCount: 0,
             }
             return {...state, postsArr: [...state.postsArr, newPost], currentPostArea: ''};

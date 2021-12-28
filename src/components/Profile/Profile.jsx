@@ -4,7 +4,6 @@ import classes from './Profile.module.css';
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
 
 const Profile = (props) => {
-  console.log(props)
   return (
       <main className={classes.content}>
       {/*<div>

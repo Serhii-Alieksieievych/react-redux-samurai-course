@@ -33,6 +33,7 @@ export const FollowAPI = {
 
 export const ProfileAPI = {
     getProfileData(userId){
+        userId = userId ? userId : 2
         return (
             instance.get(`/profile/${userId}`).then(resp => resp.data)
         )
@@ -52,6 +53,23 @@ export const ProfileAPI = {
 }
 
 export const AuthAPI = {
+    login({ input, password, rememberMe, capcha }) {
+        return instance.post(
+            `/auth/login`,
+            {
+                email: input,
+                password: password,
+                rememberMe: rememberMe
+            },
+        )
+    },
+
+    logoutAxios() {
+        return instance.delete(
+            `/auth/login`,
+        ).then(response => response.data)
+    },
+
     getAuthStatus(){
         return(
             axios.get(`https://social-network.samuraijs.com/api/1.0/auth/me`, {

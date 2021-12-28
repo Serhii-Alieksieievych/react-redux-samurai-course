@@ -1,22 +1,10 @@
-import React, { useRef } from "react";
+import React from "react";
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
 import classes from './Dialogs.module.css';
-import { Navigate } from "react-router-dom";
+import DialogReduxForm from "./DialogForm/DialogForm";
 
-const Dialogs = ({ sendMessage, changeMessage, dialogs, messages, currentMessage, isAuthorised }) => {
-   
-    const messageArea = useRef('')
-
-    const sendMessageHandler = (e) =>{
-        e.preventDefault();
-        sendMessage()
-    }
-
-    const changeMessageHandler = () => {
-        const text = messageArea.current.value
-        changeMessage(text)
-    }
+const Dialogs = ({ sendMessage, dialogs, messages}) => {
     return (
         <div className={classes.dialogs}>
             <div className={classes.dialogsItems}>
@@ -33,10 +21,10 @@ const Dialogs = ({ sendMessage, changeMessage, dialogs, messages, currentMessage
                     userId={message.userId}
                 />)}
             </div>
-            <form onSubmit={sendMessageHandler} className={classes.form}>
-                <textarea value={currentMessage} ref={messageArea} onChange={changeMessageHandler}/>
-                <button>Відправити повідомлення</button>
-            </form>
+            <DialogReduxForm onSubmit={(data)=>{
+                sendMessage(data.message)
+                data.message=''
+            }} />
         </div>
     )
 }

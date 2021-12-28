@@ -1,7 +1,7 @@
 const SEND_MESSAGE = 'SEND-MESSAGE';
 const CHANGE_NEW_MESSAGE = 'CHANGE-NEW-MESSAGE';
 
-export const sendMessageActionCreator = () => ({ type: SEND_MESSAGE, })
+export const sendMessageActionCreator = (payload) => ({ type: SEND_MESSAGE, payload })
 export const changeNewMessageActionCreator = (text) => {
     return ({
         type: CHANGE_NEW_MESSAGE,
@@ -26,14 +26,12 @@ const initialState = {
 };
 
 const dialogsReducer = (state = initialState, action) => {
-
-
     switch (action.type) {
         case SEND_MESSAGE:
             let newMessage = {
                 id: state.messagesArr.length + 1,
                 userId: 0,
-                message: state.currentMessage
+                message: action.payload,
             };
             return { ...state, messagesArr: [...state.messagesArr, newMessage], currentMessage:''};
         case CHANGE_NEW_MESSAGE:
