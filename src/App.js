@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 
 import './App.css';
 
@@ -12,8 +12,28 @@ import Settings from './components/Settings/Settings';
 import TrashcatsContainer from './components/Trashcats/TrashcatsContainer';
 import ProfileContainer from './components/Profile/ProfileContainer';
 import Login from './components/Login/Login';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { Grid } from 'svg-loaders-react';
+import { checkAutorization } from './Redux/auth-reducer';
+import { connect } from 'react-redux';
 
-const App = () => {
+const App = ({checkAutorization, userId}) => {
+  const navigate = useNavigate();
+  const [isRedirectedToLogin, setIsRedirectedToLogin] = useState(false);
+
+  const [isInicialized, setIsInicialized] = useState(false)
+  useEffect(()=>{
+    checkAutorization().then(()=>{
+      setIsInicialized(true)
+      if (!userId) {
+        setIsRedirectedToLogin(true)
+        navigate("/login")
+      }
+    })
+
+  }, [userId])
+  if (!isInicialized) return <div className="appPreloader" ><Grid /></div>
   return (
     <div className="app-wrapper">
       <HeaderContainer />
@@ -58,4 +78,8 @@ const App = () => {
   );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  userId: state.auth.id,
+})
+
+export default connect(mapStateToProps, {checkAutorization})(App);

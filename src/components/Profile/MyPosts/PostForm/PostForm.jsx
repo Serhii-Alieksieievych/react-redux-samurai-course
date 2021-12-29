@@ -3,8 +3,7 @@ import { reduxForm, Field } from "redux-form";
 import { requiredField, maxLengthCreator, minLengthCreator } from "../../../../utils/validators/validator";
 import { CustomField } from "../../../common/CustomForms/CustomForms";
 
-const maxLengthValidate = maxLengthCreator(20)
-const minLengthValidate = minLengthCreator(2)
+const maxLengthValidate = maxLengthCreator(2000)
 
 const PostForm = ({handleSubmit}) => {
     return (
@@ -13,7 +12,7 @@ const PostForm = ({handleSubmit}) => {
                 name="post"
                 component={CustomField}
                 placeholder="New post"
-                validate={ [requiredField, maxLengthValidate, minLengthValidate] }
+                validate={ [maxLengthValidate] }
             />
             <button>Add post</button>
         </form>

@@ -32,7 +32,7 @@ class TrashcatsAPIComponent extends React.Component {
             getUsers,
             isAuthorised,
         } = this.props;
-        return ( isFetching 
+        return (isFetching
             ? <div style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -52,12 +52,12 @@ class TrashcatsAPIComponent extends React.Component {
                 toggleFollowingStatus={toggleFollowingStatus}
                 haveFollowingInProgress={haveFollowingInProgress}
                 isAuthorised={isAuthorised}
-            />  
+            />
         )
     }
-} 
+}
 
-const mapStateToProps = (state) =>({
+const mapStateToProps = (state) => ({
     trashcats: state.trashcatsPage.trashcats,
     totalCount: state.trashcatsPage.totalCount,
     pageSize: state.trashcatsPage.pageSize,
@@ -94,4 +94,4 @@ export default compose(
         toggleFollowingStatus,
         getUsers,
     }),
-withAuthRedirect)(TrashcatsAPIComponent)
+    withAuthRedirect)(TrashcatsAPIComponent)

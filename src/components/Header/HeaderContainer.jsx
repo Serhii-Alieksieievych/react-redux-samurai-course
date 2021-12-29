@@ -4,6 +4,7 @@ import {
     setAuthUserData,
     setSmallAvatar,
     toggleIsFetching,
+    logoutTC,
 } from "../../Redux/auth-reducer";
 import Header from "./Header";
 import { checkAutorization } from "../../Redux/auth-reducer";
@@ -31,5 +32,6 @@ export default connect(mapStateToProps,
         setSmallAvatar,
         toggleIsFetching,
         checkAutorization,
+        logoutTC,
     }
 )(HeaderContainer);

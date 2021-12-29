@@ -4,7 +4,7 @@ import { CustomField } from "../../common/CustomForms/CustomForms";
 import classes from '../Dialogs.module.css';
 import { maxLengthCreator, requiredField } from "../../../utils/validators/validator";
 
-const maxLengthValidate = maxLengthCreator(30);
+const maxLengthValidate = maxLengthCreator(500);
 
 const DialogForm = ({ handleSubmit }) => {
     return (

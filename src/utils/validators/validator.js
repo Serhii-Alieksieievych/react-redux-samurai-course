@@ -8,5 +8,6 @@ export const maxLengthCreator = maxLength => value => {
 }
 
 export const minLengthCreator = minLength => value => {
-    return value >= minLength ? undefined : `Max lenhgth is ${minLength}`
+    if (value) return value.length >= minLength ? undefined : `Min lenhgth is ${minLength}`
+    return undefined
 }

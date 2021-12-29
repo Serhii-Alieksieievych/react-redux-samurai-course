@@ -13,17 +13,17 @@ const mapStateToProps = (state) => (
 )
 
 const mapDispatchToProps = (dispatch) => (
-        {
-            sendMessage: (message) => {
-                dispatch(sendMessageActionCreator(message));
-                dispatch(changeNewMessageActionCreator(''));
-            },
+    {
+        sendMessage: (message) => {
+            dispatch(sendMessageActionCreator(message));
+            dispatch(changeNewMessageActionCreator(''));
+        },
 
-            changeMessage: (text) => {
-                dispatch(changeNewMessageActionCreator(text))
-            }
+        changeMessage: (text) => {
+            dispatch(changeNewMessageActionCreator(text))
         }
-    )
+    }
+)
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),

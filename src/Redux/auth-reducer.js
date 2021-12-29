@@ -6,20 +6,40 @@ const SET_SMALL_AVATAR = 'SET_SMALL_AVATAR';
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
 const LOGIN = 'LOGIN';
 const LOGOUT = 'LOGOUT';
+const RESET_AUTH = "RESET_AUTH";
 
 export const login = (userId) => ({type: LOGIN, userId})
 export const logout = () => ({ type: LOGOUT })
 
 export const loginTC = (formData) => dispatch => {
-    AuthAPI.login(formData).then(response => {
-        if (response.data.resultCode === 0) dispatch(login(response.data.data.userId))
+    return AuthAPI.login(formData).then(response => {
+        if (response.data.resultCode === 0) {
+            dispatch(login(response.data.data.userId))
+            return response.data;
+        }
         else {
-            console.log(response.data.messages[0])
             dispatch(stopSubmit("login", {_error: response.data.messages[0]}))
         }
+    }).then(()=>{
+        dispatch(checkAutorization())
     })
 }
 
+export const logoutTC = () => dispatch => {
+    return AuthAPI.logoutAxios().then(r => {
+        console.log(r)
+        dispatch(resetAuthUserData())
+    })
+}
+
+const resetAuthUserData = () => ({
+    type: RESET_AUTH,
+    data: {
+        isLogged: null,
+        id: null,
+        email: null,
+        login: null,
+    }})
 
 export const setAuthUserData = (isLogged, id, email, login) => ( 
     {   
@@ -52,7 +72,7 @@ export const toggleIsFetching = (isFetching) => (
 )
 
 export const checkAutorization = () => (dispatch) => {
-    AuthAPI.getAuthStatus().then(data => {
+    return AuthAPI.getAuthStatus().then(data => {
         const isLogged = data.resultCode === 0 ? true : false;
         const { id, login, email } = data.data;
         if (isLogged) dispatch(setAuthUserData(isLogged, id, email, login))
@@ -66,7 +86,7 @@ export const checkAutorization = () => (dispatch) => {
 }
 
 const initialState = {
-    userId: null,
+    id: null,
     email: null,
     login: null,
     smallAvatarSRC: null,
@@ -78,6 +98,8 @@ const profileReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_AUTH:
             return {...state, ...action.data};
+        case RESET_AUTH:
+            return { ...state, ...action.data };
         case TOGGLE_IS_FETCHING:
             return {...state, ...action.data}
         case SET_SMALL_AVATAR:
