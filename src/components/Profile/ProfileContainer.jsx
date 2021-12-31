@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { setProfile , getStatus, updateStatus } from "../../Redux/profile-reducer";
 import { withAuthRedirect } from "../../hoc/withAuthRedirect";
 import { compose } from "redux";
+import { getProfileInfoSelector, getStatusSelector } from "../../Redux/profile-selectors";
 
 const withRouter = WrappedComponent => props => {
   const params = useParams();
@@ -46,8 +47,8 @@ class ProfileContainer extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  profileInfo: state.profilePage.profileInfo,
-  status: state.profilePage.status,
+  profileInfo: getProfileInfoSelector(state),
+  status: getStatusSelector(state),
 })
 
 export default  compose(

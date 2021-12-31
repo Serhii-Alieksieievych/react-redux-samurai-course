@@ -12,11 +12,21 @@ import { Grid } from 'svg-loaders-react'
 import Trashcats from "./Trashcats";
 import { withAuthRedirect } from "../../hoc/withAuthRedirect";
 import { compose } from "redux";
+import {
+    getCurrentPageSelector,
+    getHaveFollowingInProgressSelector,
+    getIsFetchingSelector,
+    getPageSizeSelector,
+    getTotalUsersCountSelector,
+    getUsersSelector,
+    getUsersByReselectorSelector,
+} from "../../Redux/users-selectors";
 
 
 class TrashcatsAPIComponent extends React.Component {
     componentDidMount() {
         this.props.getUsers()
+        
     }
     render() {
         const {
@@ -32,6 +42,7 @@ class TrashcatsAPIComponent extends React.Component {
             getUsers,
             isAuthorised,
         } = this.props;
+        
         return (isFetching
             ? <div style={{
                 display: 'flex',
@@ -58,12 +69,12 @@ class TrashcatsAPIComponent extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-    trashcats: state.trashcatsPage.trashcats,
-    totalCount: state.trashcatsPage.totalCount,
-    pageSize: state.trashcatsPage.pageSize,
-    currentPage: state.trashcatsPage.currentPage,
-    isFetching: state.trashcatsPage.isFetching,
-    haveFollowingInProgress: state.trashcatsPage.haveFollowingInProgress,
+    trashcats: getUsersSelector(state),
+    totalCount: getTotalUsersCountSelector(state),
+    pageSize: getPageSizeSelector(state),
+    currentPage: getCurrentPageSelector(state),
+    isFetching: getIsFetchingSelector(state),
+    haveFollowingInProgress: getHaveFollowingInProgressSelector(state),
 })
 
 /*const mapDispatchToProps = (dispatch) => ({

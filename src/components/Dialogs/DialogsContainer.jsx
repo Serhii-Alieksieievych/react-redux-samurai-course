@@ -3,12 +3,13 @@ import { changeNewMessageActionCreator, sendMessageActionCreator } from "../../R
 import { connect } from "react-redux";
 import { withAuthRedirect } from "../../hoc/withAuthRedirect";
 import { compose } from "redux";
+import { getCurrentMessageSelector, getDialogsSelector, getMessagesSelector } from "../../Redux/dialogs-selectors";
 
 const mapStateToProps = (state) => (
     {
-        messages: state.dialogsPage.messagesArr,
-        dialogs: state.dialogsPage.dialogsArr,
-        currentMessage: state.dialogsPage.currentMessage,
+        messages: getMessagesSelector(state),
+        dialogs: getDialogsSelector(state),
+        currentMessage: getCurrentMessageSelector(state),
     }
 )
 

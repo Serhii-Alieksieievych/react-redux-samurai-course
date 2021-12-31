@@ -1,7 +1,8 @@
 import React from "react";
 import classes from './Trashcats.module.css';
 import userPhoto from "../../assets/img/Opossums.jpg"
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 const Trashcats = ({
         trashcats,
@@ -12,7 +13,6 @@ const Trashcats = ({
         currentPage,
         getUsers,
         haveFollowingInProgress,
-        isAuthorised
     }) => {
     const pagesCount = Math.ceil(totalCount / pageSize);
     const pageSpans = [];

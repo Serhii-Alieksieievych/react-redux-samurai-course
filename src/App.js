@@ -21,19 +21,17 @@ import { connect } from 'react-redux';
 const App = ({checkAutorization, userId}) => {
   const navigate = useNavigate();
   const [isRedirectedToLogin, setIsRedirectedToLogin] = useState(false);
-
   const [isInicialized, setIsInicialized] = useState(false)
   useEffect(()=>{
     checkAutorization().then(()=>{
       setIsInicialized(true)
-      if (!userId) {
-        setIsRedirectedToLogin(true)
-        navigate("/login")
-      }
     })
-
   }, [userId])
   if (!isInicialized) return <div className="appPreloader" ><Grid /></div>
+  if (isInicialized && !userId && !isRedirectedToLogin) {
+    setIsRedirectedToLogin(true)
+    navigate("/login")
+  }
   return (
     <div className="app-wrapper">
       <HeaderContainer />

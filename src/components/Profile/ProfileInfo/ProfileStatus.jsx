@@ -1,13 +1,18 @@
 import React from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 import classes from './ProfileInfo.module.css';
 
 const ProfileStatus = ({status, updateStatus}) => {
   const [editMode, setEditMode] = useState(false);
   const [localStatus, setLocalStatus] = useState(status);
+  useEffect(() => {
+    setLocalStatus(status)
+  }, [status])
+  
+
   const activateEditMode = () => {
     setEditMode(true)
-    setLocalStatus(status)
   }
 
   const deactivateEditMode = () => {
