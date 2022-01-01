@@ -1,6 +1,5 @@
 import { connect } from "react-redux";
 import {
-    setCurrentPage,
     setState,
     toggleIsFetching,
     toggleFollowingStatus,
@@ -40,6 +39,7 @@ class usersAPIComponent extends React.Component {
             toggleFollowingStatus,
             getUsers,
             isAuthorised,
+            setCurrentPage,
         } = this.props;
 
         return (isFetching
@@ -62,6 +62,7 @@ class usersAPIComponent extends React.Component {
                 toggleFollowingStatus={toggleFollowingStatus}
                 haveFollowingInProgress={haveFollowingInProgress}
                 isAuthorised={isAuthorised}
+                setCurrentPage={setCurrentPage}
             />
         )
     }
@@ -99,7 +100,6 @@ export default compose(
         followTC,
         unfollowTC,
         setState,
-        setCurrentPage,
         toggleIsFetching,
         toggleFollowingStatus,
         getUsers,
