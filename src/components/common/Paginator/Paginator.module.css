@@ -1,0 +1,37 @@
+.paginatorWrapper{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    border: black solid 1px;
+    border-radius: 7px;
+    max-width: 90vw;
+
+    margin:10px;
+    padding:5px;
+}
+
+.span {
+    margin: 3px;
+    padding: 3px;
+    border: black solid 1px;
+    border-radius: 3px;
+    cursor: pointer;
+    width: 45px;
+    text-align: center;
+}
+
+.span:hover{
+    background-color: rgba(200, 0, 0, 0.2);
+}
+
+.activePaginator {
+    font-weight: bold;
+    border: black solid 3px;
+    background-color: rgba(250, 0, 0, 0.3);
+}
+
+.activePaginator:hover{
+    font-weight: bold;
+    border: black solid 3px;
+    background-color: rgba(250, 0, 0, 0.3);
+}

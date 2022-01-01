@@ -39,10 +39,10 @@ const Navbar = () => {
             </div>
             <div className={classes.item}>
                 <Link
-                    to="trashcats"
+                    to="users"
                     className={classes.link}
                 >
-                    Trashcats
+                    Users
                 </Link>
             </div>
             <div className={classes.item}>

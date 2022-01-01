@@ -5,11 +5,11 @@ import {
     toggleIsFetching,
     toggleFollowingStatus,
     getUsers,
-} from "../../Redux/trashcats-reducer";
-import { followTC, unfollowTC } from "../../Redux/trashcats-reducer";
+} from "../../Redux/users-reducer";
+import { followTC, unfollowTC } from "../../Redux/users-reducer";
 import React from "react";
 import { Grid } from 'svg-loaders-react'
-import Trashcats from "./Trashcats";
+import Users from "./Users";
 import { withAuthRedirect } from "../../hoc/withAuthRedirect";
 import { compose } from "redux";
 import {
@@ -18,19 +18,18 @@ import {
     getIsFetchingSelector,
     getPageSizeSelector,
     getTotalUsersCountSelector,
-    getUsersSelector,
     getUsersByReselectorSelector,
 } from "../../Redux/users-selectors";
 
 
-class TrashcatsAPIComponent extends React.Component {
+class usersAPIComponent extends React.Component {
     componentDidMount() {
         this.props.getUsers()
-        
+
     }
     render() {
         const {
-            trashcats,
+            users,
             followTC,
             unfollowTC,
             totalCount,
@@ -42,7 +41,7 @@ class TrashcatsAPIComponent extends React.Component {
             getUsers,
             isAuthorised,
         } = this.props;
-        
+
         return (isFetching
             ? <div style={{
                 display: 'flex',
@@ -52,8 +51,8 @@ class TrashcatsAPIComponent extends React.Component {
             }}>
                 <Grid />
             </div>
-            : <Trashcats
-                trashcats={trashcats}
+            : <Users
+                users={users}
                 follow={followTC}
                 unfollow={unfollowTC}
                 totalCount={totalCount}
@@ -69,7 +68,7 @@ class TrashcatsAPIComponent extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-    trashcats: getUsersSelector(state),
+    users: getUsersByReselectorSelector(state),
     totalCount: getTotalUsersCountSelector(state),
     pageSize: getPageSizeSelector(state),
     currentPage: getCurrentPageSelector(state),
@@ -84,8 +83,8 @@ const mapStateToProps = (state) => ({
     unfollow: id => {
         dispatch(unfollowActionCreator(id))
     },
-    setTrashcats: (trashcats, totalCount) => {
-        dispatch(setStateActionCreator(trashcats, totalCount))
+    setusers: (users, totalCount) => {
+        dispatch(setStateActionCreator(users, totalCount))
     },
     setCurrentPage: page => {
         dispatch(setCurrentPageAC(page))
@@ -105,4 +104,4 @@ export default compose(
         toggleFollowingStatus,
         getUsers,
     }),
-    withAuthRedirect)(TrashcatsAPIComponent)
+    withAuthRedirect)(usersAPIComponent)

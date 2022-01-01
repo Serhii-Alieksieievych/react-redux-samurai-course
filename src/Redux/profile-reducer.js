@@ -14,27 +14,23 @@ export const changePostActionCreator = (text) => ({
 })
 export const setProfileInfo = (profileInfo) => ({type: SET_PROFILE_INFO, profileInfo})
 
-export const setProfile = (id)=> (dispatch) =>{
+export const setProfile = id => async dispatch =>{
     const userId = id ? id : 21473;
-    ProfileAPI.getProfileData(userId).then(data => {
-        dispatch(setProfileInfo(data))
-    })
+    const data = await ProfileAPI.getProfileData(userId)
+    dispatch(setProfileInfo(data))
 }
 
-export const getStatus = (id) => (dispatch) => {
+export const getStatus = id => async dispatch => {
     const userId = id ? id : 21473;
-    ProfileAPI.getStatus(userId).then(data => {
+    const data = await ProfileAPI.getStatus(userId)
         dispatch(setStatus(data))
-    })
 }
 
-export const updateStatus = (status) => (dispatch) => {
-    ProfileAPI.updateStatus(status).then(data => {
-        console.log(data)
-        if (!data.resultCode) {
-            dispatch(setStatus(status))
-        }
-    })
+export const updateStatus = status => async dispatch => {
+    const data = await ProfileAPI.updateStatus(status)
+    if (!data.resultCode) {
+    dispatch(setStatus(status))
+    }
 }
 
 

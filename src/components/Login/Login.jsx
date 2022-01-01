@@ -1,16 +1,15 @@
 import React from "react";
 import { useEffect } from "react";
-import { useState } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { Field, reduxForm } from "redux-form";
-import { AuthAPI } from "../../api/api";
 import { withBackAuthRedirect } from "../../hoc/withAuthRedirect";
 import { loginTC } from "../../Redux/auth-reducer";
 import { requiredField } from "../../utils/validators/validator";
-import { CustomField, Input } from "../common/CustomForms/CustomForms";
+import { CustomField } from "../common/CustomForms/CustomForms";
 import classes from "./Login.module.css";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const LoginForm = ({ handleSubmit, error }) => {
     return (
@@ -55,12 +54,7 @@ const Login = ({ loginTC, userId }) => {
     useEffect(() => {
 
     }, [userId])
-
-    let navigate = useNavigate();
-    function handleClick() {
-        navigate(-1)
-    }
-
+   
     const onSubmit = (formData) => {
         if (!userId) loginTC(formData).then(() => { })
     }

@@ -9,7 +9,7 @@ import Navbar from './components/Navbar/Navbar';
 import News from './components/News/News';
 import Music from './components/Music/Music';
 import Settings from './components/Settings/Settings';
-import TrashcatsContainer from './components/Trashcats/TrashcatsContainer';
+import UsersContainer from './components/Users/UsersContainer';
 import ProfileContainer from './components/Profile/ProfileContainer';
 import Login from './components/Login/Login';
 import { useEffect } from 'react';
@@ -18,12 +18,12 @@ import { Grid } from 'svg-loaders-react';
 import { checkAutorization } from './Redux/auth-reducer';
 import { connect } from 'react-redux';
 
-const App = ({checkAutorization, userId}) => {
+const App = ({ checkAutorization, userId }) => {
   const navigate = useNavigate();
   const [isRedirectedToLogin, setIsRedirectedToLogin] = useState(false);
   const [isInicialized, setIsInicialized] = useState(false)
-  useEffect(()=>{
-    checkAutorization().then(()=>{
+  useEffect(() => {
+    checkAutorization().then(() => {
       setIsInicialized(true)
     })
   }, [userId])
@@ -47,12 +47,12 @@ const App = ({checkAutorization, userId}) => {
                 <ProfileContainer />
               }
             />
-              <Route
-                path="me"
-                element={
-                  <ProfileContainer />
-                }
-              />
+            <Route
+              path="me"
+              element={
+                <ProfileContainer />
+              }
+            />
           </Route>
           <Route
             path="/dialogs"
@@ -61,15 +61,15 @@ const App = ({checkAutorization, userId}) => {
             }
           />
           <Route
-            path="/trashcats"
+            path="/users"
             element={
-              <TrashcatsContainer />
+              <UsersContainer />
             }
           />
-          <Route path="/news" element={<News />}/>
-          <Route path="/music" element={<Music />}/>
-          <Route path="/settings" element={<Settings />}/>
-          <Route path="/login" element={<Login/>} />
+          <Route path="/news" element={<News />} />
+          <Route path="/music" element={<Music />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </div>
     </div>
@@ -80,4 +80,4 @@ const mapStateToProps = (state) => ({
   userId: state.auth.id,
 })
 
-export default connect(mapStateToProps, {checkAutorization})(App);
+export default connect(mapStateToProps, { checkAutorization })(App);

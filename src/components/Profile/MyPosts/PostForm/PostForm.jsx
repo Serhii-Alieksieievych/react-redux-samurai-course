@@ -1,6 +1,6 @@
 import React from "react";
 import { reduxForm, Field } from "redux-form";
-import { requiredField, maxLengthCreator, minLengthCreator } from "../../../../utils/validators/validator";
+import { maxLengthCreator } from "../../../../utils/validators/validator";
 import { CustomField } from "../../../common/CustomForms/CustomForms";
 
 const maxLengthValidate = maxLengthCreator(2000)

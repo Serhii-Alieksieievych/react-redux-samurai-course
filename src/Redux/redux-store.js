@@ -1,18 +1,22 @@
-import { applyMiddleware, combineReducers, createStore } from 'redux';
+import { applyMiddleware, combineReducers, createStore, compose } from 'redux';
 import profileReducer from './profile-reducer';
 import dialogsReducer from './dialogs-reducer';
-import trashcatsReducer from './trashcats-reducer';
+import usersReducer from './users-reducer';
 import authReducer from './auth-reducer';
-import {reducer as formReducer } from 'redux-form';
+import { reducer as formReducer } from 'redux-form';
 import thunkMiddleware from 'redux-thunk';
 
 let reducers = combineReducers({
     profilePage: profileReducer,
     dialogsPage: dialogsReducer,
-    trashcatsPage: trashcatsReducer,
+    usersPage: usersReducer,
     auth: authReducer,
     form: formReducer,
 })
-const store = createStore(reducers, applyMiddleware(thunkMiddleware));
+
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const store = createStore(reducers, composeEnhancers(applyMiddleware(thunkMiddleware)));
 
 export default store;

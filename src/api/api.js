@@ -2,14 +2,14 @@ import axios from 'axios';
 
 const instance = axios.create({
     withCredentials: true,
-    baseURL:`https://social-network.samuraijs.com/api/1.0/`,
+    baseURL: `https://social-network.samuraijs.com/api/1.0/`,
     headers: {
         'API-KEY': '2684d674-512e-42f2-86c1-036ed91abbce'
     }
 })
 
 export const UsersAPI = {
-    getUsers(currentPage = 1, pageSize = 12){
+    getUsers(currentPage = 1, pageSize = 12) {
         return instance.get(
             `users?page=${currentPage}&count=${pageSize}`,
         ).then(response => response.data)
@@ -17,35 +17,35 @@ export const UsersAPI = {
 }
 
 export const FollowAPI = {
-    followAxios (trashcat){
+    followAxios(user) {
         return instance.post(
-            `follow/${trashcat.id}`,
+            `follow/${user.id}`,
             {},
         ).then(response => response.data)
     },
 
-    unfollowAxios(trashcat){
+    unfollowAxios(user) {
         return instance.delete(
-            `follow/${trashcat.id}`,
+            `follow/${user.id}`,
         ).then(response => response.data)
     }
 }
 
 export const ProfileAPI = {
-    getProfileData(userId){
+    getProfileData(userId) {
         userId = userId ? userId : 2
         return (
             instance.get(`/profile/${userId}`).then(resp => resp.data)
         )
     },
-    getStatus(userId){
+    getStatus(userId) {
         return (
             instance.get(`/profile/status/${userId}`).then(resp => resp.data)
         )
     },
     updateStatus(status) {
         return (
-            instance.put(`/profile/status`,{
+            instance.put(`/profile/status`, {
                 status: status,
             }).then(resp => resp.data)
         )
@@ -70,8 +70,8 @@ export const AuthAPI = {
         ).then(response => response.data)
     },
 
-    getAuthStatus(){
-        return(
+    getAuthStatus() {
+        return (
             axios.get(`https://social-network.samuraijs.com/api/1.0/auth/me`, {
                 withCredentials: true
             }).then(resp => resp.data)

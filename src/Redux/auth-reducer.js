@@ -11,25 +11,21 @@ const RESET_AUTH = "RESET_AUTH";
 export const login = (userId) => ({type: LOGIN, userId})
 export const logout = () => ({ type: LOGOUT })
 
-export const loginTC = (formData) => dispatch => {
-    return AuthAPI.login(formData).then(response => {
-        if (response.data.resultCode === 0) {
-            dispatch(login(response.data.data.userId))
-            return response.data;
-        }
-        else {
-            dispatch(stopSubmit("login", {_error: response.data.messages[0]}))
-        }
-    }).then(()=>{
-        dispatch(checkAutorization())
-    })
+export const loginTC = formData => async dispatch => {
+    const response = await AuthAPI.login(formData)
+    if (response.data.resultCode === 0) {
+        dispatch(login(response.data.data.userId))
+        const data = await response.data;
+    }
+    else {
+        dispatch(stopSubmit("login", {_error: response.data.messages[0]}))
+    }
+    dispatch(checkAutorization())
 }
 
-export const logoutTC = () => dispatch => {
-    return AuthAPI.logoutAxios().then(r => {
-        console.log(r)
-        dispatch(resetAuthUserData())
-    })
+export const logoutTC = () => async dispatch => {
+    const data = await AuthAPI.logoutAxios()
+    dispatch(resetAuthUserData())
 }
 
 const resetAuthUserData = () => ({
