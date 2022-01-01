@@ -7,6 +7,7 @@ import { setProfile , getStatus, updateStatus } from "../../Redux/profile-reduce
 import { withAuthRedirect } from "../../hoc/withAuthRedirect";
 import { compose } from "redux";
 import { getProfileInfoSelector, getStatusSelector } from "../../Redux/profile-selectors";
+import { useEffect } from "react";
 
 const withRouter = WrappedComponent => props => {
   const params = useParams();
@@ -20,30 +21,27 @@ const withRouter = WrappedComponent => props => {
   );
 };
 
+const ProfileContainer = (props) => {
+  useEffect(()=>{
+    let { userId } = props.params;
+    props.setProfile(userId)
+    props.getStatus(userId)
+  },[props.params.userId])
 
-class ProfileContainer extends React.Component {
-  componentDidMount(){
-    let {userId} = this.props.params;
-    this.props.setProfile(userId)
-    this.props.getStatus(userId)
-    } 
-
-  render(){
-    return(
-      this.props.profileInfo
-        ? <Profile {...this.props} />
-        : <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: '90vh'
-            }}
-          >
-            <Grid />
-          </div>
-    )
-  }
+  return (
+    props.profileInfo
+      ? <Profile {...props} />
+      : <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '90vh'
+        }}
+      >
+        <Grid />
+      </div>
+  )
 }
 
 const mapStateToProps = (state) => ({
