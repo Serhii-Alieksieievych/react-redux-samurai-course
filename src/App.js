@@ -1,22 +1,22 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 
 import './App.css';
 
-import DialogsContainer from './components/Dialogs/DialogsContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
 import Navbar from './components/Navbar/Navbar';
 import News from './components/News/News';
 import Music from './components/Music/Music';
 import Settings from './components/Settings/Settings';
-import UsersContainer from './components/Users/UsersContainer';
-import ProfileContainer from './components/Profile/ProfileContainer';
-import Login from './components/Login/Login';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { Grid } from 'svg-loaders-react';
 import { checkAutorization } from './Redux/auth-reducer';
 import { connect } from 'react-redux';
+const DialogsContainer = lazy(() => import('./components/Dialogs/DialogsContainer'));
+const ProfileContainer = lazy(() => import('./components/Profile/ProfileContainer'));
+const UsersContainer = lazy(() => import('./components/Users/UsersContainer'));
+const Login = lazy(() => import('./components/Login/Login'));
 
 const App = ({ checkAutorization, userId }) => {
   const navigate = useNavigate();
@@ -37,6 +37,7 @@ const App = ({ checkAutorization, userId }) => {
       <HeaderContainer />
       <Navbar />
       <div className="app-wrapper-content">
+        <Suspense fallback={<Grid />}>
         <Routes>
           <Route
             path="profile"
@@ -54,12 +55,12 @@ const App = ({ checkAutorization, userId }) => {
               }
             />
           </Route>
-          <Route
-            path="/dialogs"
-            element={
-              <DialogsContainer />
-            }
-          />
+            <Route
+              path="/dialogs"
+              element={
+                <DialogsContainer />
+              }
+            />
           <Route
             path="/users"
             element={
@@ -71,6 +72,7 @@ const App = ({ checkAutorization, userId }) => {
           <Route path="/settings" element={<Settings />} />
           <Route path="/login" element={<Login />} />
         </Routes>
+        </Suspense>
       </div>
     </div>
   );
