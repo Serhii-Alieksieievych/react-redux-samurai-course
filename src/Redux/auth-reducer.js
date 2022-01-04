@@ -1,26 +1,28 @@
-import { stopSubmit } from "redux-form";
 import { AuthAPI, ProfileAPI } from "../api/api";
 
 const SET_AUTH = 'SET_AUTH';
 const SET_SMALL_AVATAR = 'SET_SMALL_AVATAR';
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
 const LOGIN = 'LOGIN';
+const HAD_ERR = 'HAD_ERR';
 const LOGOUT = 'LOGOUT';
 const RESET_AUTH = "RESET_AUTH";
 
 export const login = (userId) => ({type: LOGIN, userId})
 export const logout = () => ({ type: LOGOUT })
+const hadErr = (payload)=> ({type: HAD_ERR, payload})
 
 export const loginTC = formData => async dispatch => {
     const response = await AuthAPI.login(formData)
     if (response.data.resultCode === 0) {
         dispatch(login(response.data.data.userId))
         const data = await response.data;
+        dispatch(checkAutorization())
     }
     else {
-        dispatch(stopSubmit("login", {_error: response.data.messages[0]}))
+        dispatch(hadErr())
+        return response.data.messages[0]
     }
-    dispatch(checkAutorization())
 }
 
 export const logoutTC = () => async dispatch => {
@@ -88,6 +90,7 @@ const initialState = {
     smallAvatarSRC: null,
     isLogged: false,
     isFetching: false,
+    hadErr: false,
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -101,9 +104,11 @@ const profileReducer = (state = initialState, action) => {
         case SET_SMALL_AVATAR:
             return { ...state, ...action.data };
         case LOGIN:
-            return { ...state, userId: action.userId }
+            return { ...state, userId: action.userId, hadErr: false }
         case LOGOUT:
             return { ...state, userId: null }
+        case HAD_ERR:
+            return { ...state, hadErr: true }
         default:
             return state;
     }

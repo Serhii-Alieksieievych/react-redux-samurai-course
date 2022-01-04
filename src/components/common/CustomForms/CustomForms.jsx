@@ -5,7 +5,7 @@ export const CustomField = ({ input, meta, ...props }) => {
     const hasError = meta.error && meta.touched
     return (
         <div className={`${classes.textareaWrapper} ${hasError && classes.error}`}>
-            {props.type
+            {input.type
                 ? <Input {...input} {...props} />
                 : <Textarea  {...input} {...props} />
             }

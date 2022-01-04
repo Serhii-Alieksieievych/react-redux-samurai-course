@@ -5,14 +5,28 @@ const ADD_POST = 'ADD-POST';
 const SET_PROFILE_INFO = 'SET_PROFILE_INFO';
 const SET_STATUS = 'SET_STATUS';
 
-
-export const setStatus = (status) => ({type: SET_STATUS , status})
+export const setStatus = (status) => ({type: SET_STATUS, status})
 export const addPostActionCreator = (payload) => ({ type: "ADD-POST", payload })
 export const changePostActionCreator = (text) => ({
     type: UPDATE_NEW_POST_TEXT,
     newText: text,
 })
 export const setProfileInfo = (profileInfo) => ({type: SET_PROFILE_INFO, profileInfo})
+
+export const updateProfileInfo = profileInfo => async dispatch => {
+    console.log(profileInfo)
+    const response = await ProfileAPI.setProfileData(profileInfo)
+    console.log(response)
+    dispatch(setProfile())
+}
+
+export const sendProfilePhoto = photo => {
+    return async dispatch => {
+        const response = await ProfileAPI.sendPhoto(photo);
+        console.log(response.data.photos)
+        dispatch(setProfile(21473))
+    }
+}
 
 export const setProfile = id => async dispatch =>{
     const userId = id ? id : 21473;

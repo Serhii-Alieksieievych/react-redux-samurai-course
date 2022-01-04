@@ -10,9 +10,7 @@ const Profile = (props) => {
         <img className={classes.decorationImg} src="https://kartinkin.net/uploads/posts/2021-07/1627170600_7-kartinkin-com-p-temnii-dlinnii-fon-krasivo-7.jpg" alt="" />
       </div>*/}
       <ProfileInfo
-        profileInfo={props.profileInfo}
-        updateStatus={props.updateStatus}
-        status={props.status}
+        {...props}
       />
       <MyPostsContainer />
       

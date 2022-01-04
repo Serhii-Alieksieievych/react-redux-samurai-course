@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Profile from "./Profile";
 import { Grid } from 'svg-loaders-react'
 import { useParams } from "react-router-dom";
-import { setProfile , getStatus, updateStatus } from "../../Redux/profile-reducer";
+import { setProfile, getStatus, updateStatus, sendProfilePhoto, updateProfileInfo } from "../../Redux/profile-reducer";
 import { withAuthRedirect } from "../../hoc/withAuthRedirect";
 import { compose } from "redux";
 import { getProfileInfoSelector, getStatusSelector } from "../../Redux/profile-selectors";
@@ -22,15 +22,15 @@ const withRouter = WrappedComponent => props => {
 };
 
 const ProfileContainer = (props) => {
+  let isOwner = !props.params.userId;
   useEffect(()=>{
     let { userId } = props.params;
     props.setProfile(userId)
     props.getStatus(userId)
   },[props.params.userId])
-
   return (
     props.profileInfo
-      ? <Profile {...props} />
+      ? <Profile {...props} isOwner={isOwner} />
       : <div
         style={{
           display: 'flex',
@@ -52,5 +52,5 @@ const mapStateToProps = (state) => ({
 export default  compose(
   withRouter,
   withAuthRedirect,
-  connect(mapStateToProps, { setProfile, getStatus, updateStatus })
+  connect(mapStateToProps, { setProfile, getStatus, updateStatus, sendProfilePhoto, updateProfileInfo })
 )(ProfileContainer)

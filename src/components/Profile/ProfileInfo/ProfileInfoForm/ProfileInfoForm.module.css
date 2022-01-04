@@ -1,0 +1,20 @@
+.contactsBlock{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.fieldWrapper {
+  display: flex;
+}
+
+.fieldWrapper p {
+  width: 200px;
+}
+
+.closeButtonWrapper {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}

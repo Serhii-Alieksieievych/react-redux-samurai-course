@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import classes from './ProfileInfo.module.css';
 
-const ProfileStatus = ({status, updateStatus}) => {
+const ProfileStatus = ({status, updateStatus, isOwner}) => {
   const [editMode, setEditMode] = useState(false);
   const [localStatus, setLocalStatus] = useState(status);
   useEffect(() => {
@@ -12,7 +12,7 @@ const ProfileStatus = ({status, updateStatus}) => {
   
 
   const activateEditMode = () => {
-    setEditMode(true)
+    isOwner && setEditMode(true)
   }
 
   const deactivateEditMode = () => {

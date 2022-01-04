@@ -38,6 +38,12 @@ export const ProfileAPI = {
             instance.get(`/profile/${userId}`).then(resp => resp.data)
         )
     },
+    setProfileData(data) {
+        console.log(data)
+        return (
+            instance.put(`/profile/`, data).then(resp => resp.data)
+        )
+    },
     getStatus(userId) {
         return (
             instance.get(`/profile/status/${userId}`).then(resp => resp.data)
@@ -48,6 +54,13 @@ export const ProfileAPI = {
             instance.put(`/profile/status`, {
                 status: status,
             }).then(resp => resp.data)
+        )
+    },
+    sendPhoto(photo) {
+        let formData = new FormData;
+        formData.append("image", photo);
+        return(
+            instance.put(`/profile/photo`, formData).then(resp => resp.data)
         )
     }
 }
