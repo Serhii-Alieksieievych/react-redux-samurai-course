@@ -1,4 +1,4 @@
-import { AuthAPI, ProfileAPI } from "../api/api";
+import { AuthAPI, ProfileAPI, securityAPI } from "../api/api";
 
 const SET_AUTH = 'SET_AUTH';
 const SET_SMALL_AVATAR = 'SET_SMALL_AVATAR';
@@ -7,7 +7,9 @@ const LOGIN = 'LOGIN';
 const HAD_ERR = 'HAD_ERR';
 const LOGOUT = 'LOGOUT';
 const RESET_AUTH = "RESET_AUTH";
+const SET_CAPTCHA_URL = "SET_CAPTCHA_URL"
 
+const setCaptchaUrl = (captchaUrl) => ({type: SET_CAPTCHA_URL, captchaUrl})
 export const login = (userId) => ({type: LOGIN, userId})
 export const logout = () => ({ type: LOGOUT })
 const hadErr = (payload)=> ({type: HAD_ERR, payload})
@@ -18,11 +20,18 @@ export const loginTC = formData => async dispatch => {
         dispatch(login(response.data.data.userId))
         const data = await response.data;
         dispatch(checkAutorization())
-    }
-    else {
+    } else if (response.data.resultCode === 10){
+        dispatch(getCaptchaUrl())
+    } else {
         dispatch(hadErr())
         return response.data.messages[0]
     }
+}
+
+export const getCaptchaUrl = () => async (dispatch) =>{
+    const data = await securityAPI.getCaptchaUrl();
+    const captchaUrl = data.url;
+    dispatch(setCaptchaUrl(captchaUrl))
 }
 
 export const logoutTC = () => async dispatch => {
@@ -90,6 +99,7 @@ const initialState = {
     smallAvatarSRC: null,
     isLogged: false,
     isFetching: false,
+    captchaUrl: null,
     hadErr: false,
 }
 
@@ -109,6 +119,8 @@ const profileReducer = (state = initialState, action) => {
             return { ...state, userId: null }
         case HAD_ERR:
             return { ...state, hadErr: true }
+        case SET_CAPTCHA_URL:
+            return { ...state, captchaUrl: action.captchaUrl}
         default:
             return state;
     }

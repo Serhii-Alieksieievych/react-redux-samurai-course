@@ -1,15 +1,12 @@
 import React from "react";
-import { useEffect } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
-//import { Field, reduxForm } from "redux-form"; //remove
 import { Form, Field } from 'react-final-form'
 import { withBackAuthRedirect } from "../../hoc/withAuthRedirect";
 import { loginTC } from "../../Redux/auth-reducer";
 import { requiredField } from "../../utils/validators/validator";
 import { CustomField } from "../common/CustomForms/CustomForms";
 import classes from "./Login.module.css";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 const LoginForm = (props) => {
@@ -18,7 +15,7 @@ const LoginForm = (props) => {
             onSubmit={props.onSubmit}
             validate={requiredField}
         >
-            {({ handleSubmit, error })=>(
+            {({ handleSubmit, error, values })=>(
                 <form action="" className={classes.loginForm} onSubmit={handleSubmit}>
                     <div name="wrapper" className={error && classes.error}>
                         <Field
@@ -45,9 +42,20 @@ const LoginForm = (props) => {
                                 Запомнить меня
                             </span>
                         </div>
+                        {props.captchaUrl
+                            && <div>
+                                <img src={props.captchaUrl} alt="captcha" />
+                                <Field
+                                    component={CustomField}
+                                    name="captcha"
+                                    type="text"
+                                    placeholder="captcha"
+                                />
+                            </div>}
                         <button>Log in</button>
                         <div className={classes.errorMessage}>{error}</div>
                     </div>
+                    <pre>{JSON.stringify(values)}</pre>
                 </form>
             )}
         </Form>
@@ -56,10 +64,9 @@ const LoginForm = (props) => {
 
 //const LoginReduxForm = reduxForm({ form: 'login' })(LoginForm)
 
-const Login = ({ loginTC, userId, hadErr }) => {
+const Login = ({ loginTC, userId, hadErr, captchaUrl }) => {
     const[errorMessage, setErrorMessage] = useState('')
 
-   console.log('render')
     const onSubmit = (formData) => {
         setErrorMessage('')
         if (!userId)loginTC(formData).then(
@@ -71,7 +78,7 @@ const Login = ({ loginTC, userId, hadErr }) => {
     return (
         <div className={classes.login}>
             <h1>Login</h1>
-            <LoginForm onSubmit={onSubmit} />
+            <LoginForm onSubmit={onSubmit} captchaUrl={captchaUrl} />
             {hadErr && <h2>{errorMessage}</h2>}
         </div>
     )
@@ -79,5 +86,6 @@ const Login = ({ loginTC, userId, hadErr }) => {
 const mapStateToProps = (state) => ({
     userId: state.auth.id,
     hadErr: state.auth.hadErr,
+    captchaUrl: state.auth.captchaUrl,
 })
 export default compose(withBackAuthRedirect, connect(mapStateToProps, { loginTC }))(Login);

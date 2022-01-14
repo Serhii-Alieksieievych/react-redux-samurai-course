@@ -1,0 +1,13 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  margin: 5px 0;
+  background-color: burlywood;
+  height: 60px;
+  max-width: 320px;
+  border-radius: 7px;
+  color: darkolivegreen;
+  word-wrap: break-word;
+}

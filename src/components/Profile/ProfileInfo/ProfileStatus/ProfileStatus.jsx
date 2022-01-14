@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import classes from './ProfileInfo.module.css';
+import classes from './ProfileStatus.module.css';
 
 const ProfileStatus = ({status, updateStatus, isOwner}) => {
   const [editMode, setEditMode] = useState(false);
@@ -21,11 +21,11 @@ const ProfileStatus = ({status, updateStatus, isOwner}) => {
   }
 
   return (
-      <div>
+      <div className={classes.wrapper}>
         {!editMode
         ? <div>
           <span onDoubleClick={activateEditMode}>
-            {status}
+            {status ? status : isOwner ? "Set your status" : "This guy hasn't status now"}
           </span>
         </div>
         : <div>

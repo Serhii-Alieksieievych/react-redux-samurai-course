@@ -1,0 +1,52 @@
+.avatarBlock {
+  background-color: turquoise;
+  margin-right: 10px;
+  border: black 1px solid;
+  padding: 5px;
+  border-radius: 10px;
+  position: relative;
+  z-index: 2;
+}
+
+.avatarSettingBlock {
+  position: relative;
+  background-color: tomato;
+  height: 50px;
+  padding: 10px;
+  border: 1px black solid;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatarSettingBlockHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 30px 90px;
+}
+
+.newAvatarInput {
+  margin: 3px;
+}
+
+.newAvatarSendButton {
+  margin: 3px;
+}
+
+.closeButton {
+  position: absolute;
+  right: 8px;
+  top: 6px;
+  cursor: pointer;
+}
+
+.avatarImg {
+  object-fit: cover;
+  height: 360px;
+  width: 320px;
+  border-radius: 10px;
+}
