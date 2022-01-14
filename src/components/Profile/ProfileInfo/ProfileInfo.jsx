@@ -5,6 +5,7 @@ import { useState } from "react";
 import ProfileInfoForm from "./ProfileInfoForm/ProfileInfoForm";
 import ProfileInfoText from "./ProfileInfoText/ProfileInfoText";
 import AvatarBlock from "./AvatarBlock/AvatarBlock";
+import Preloader from "../../common/Preloader/Preloader";
 
 const ProfileInfo = ({ isOwner, profileInfo, updateProfileInfo, sendProfilePhoto, ...props}) => {
   const [inEditMode, setInEditMode] = useState(false);
@@ -16,10 +17,15 @@ const ProfileInfo = ({ isOwner, profileInfo, updateProfileInfo, sendProfilePhoto
   const disableEditMode = () => {
     setInEditMode(false);
   }
-  
+  console.log(profileInfo.isFetching)
   return (
     <div className={classes.profileInfo}>
-      <AvatarBlock avatarSrc={profileInfo.photos.large} sendProfilePhoto={sendProfilePhoto} isOwner={isOwner} {...props}/>
+      <div className={classes.AvatarBlockWrapper}>
+        {!profileInfo.isFetching
+          ? <AvatarBlock avatarSrc={profileInfo.data.photos.large} sendProfilePhoto={sendProfilePhoto} isOwner={isOwner} {...props} />
+          : <Preloader/>
+        }
+      </div>
       <div className={classes.profileInfoTextWrapper}>
         {inEditMode
           ? <ProfileInfoForm {...props} profileInfo={profileInfo} updateProfileInfo={updateProfileInfo} disableEditMode={disableEditMode}/>

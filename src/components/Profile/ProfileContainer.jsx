@@ -29,7 +29,7 @@ const ProfileContainer = (props) => {
     props.getStatus(userId)
   },[props.params.userId])
   return (
-    props.profileInfo
+    props.profileInfo.data
       ? <Profile {...props} isOwner={isOwner} />
       : <div
         style={{

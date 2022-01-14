@@ -4,8 +4,10 @@ const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST';
 const ADD_POST = 'ADD-POST';
 const SET_PROFILE_INFO = 'SET_PROFILE_INFO';
 const SET_STATUS = 'SET_STATUS';
+const TOGGLE_FETCHING_IN_PROGRESS = 'TOGGLE_FETCHING_IN_PROGRESS';
 
 export const setStatus = (status) => ({type: SET_STATUS, status})
+export const toggleFetching = (isFetching) => ({ type: TOGGLE_FETCHING_IN_PROGRESS, isFetching })
 export const addPostActionCreator = (payload) => ({ type: "ADD-POST", payload })
 export const changePostActionCreator = (text) => ({
     type: UPDATE_NEW_POST_TEXT,
@@ -14,24 +16,24 @@ export const changePostActionCreator = (text) => ({
 export const setProfileInfo = (profileInfo) => ({type: SET_PROFILE_INFO, profileInfo})
 
 export const updateProfileInfo = profileInfo => async dispatch => {
-    console.log(profileInfo)
     const response = await ProfileAPI.setProfileData(profileInfo)
-    console.log(response)
     dispatch(setProfile())
 }
 
 export const sendProfilePhoto = photo => {
     return async dispatch => {
         const response = await ProfileAPI.sendPhoto(photo);
-        console.log(response.data.photos)
         dispatch(setProfile(21473))
     }
 }
 
-export const setProfile = id => async dispatch =>{
+export const setProfile = id => async dispatch => {
+    await console.log('huhl')
+    dispatch(toggleFetching(true))
     const userId = id ? id : 21473;
     const data = await ProfileAPI.getProfileData(userId)
     dispatch(setProfileInfo(data))
+    dispatch(toggleFetching(false))
 }
 
 export const getStatus = id => async dispatch => {
@@ -50,7 +52,10 @@ export const updateStatus = status => async dispatch => {
 
 const initialState = {
     currentPostArea: '',
-    profileInfo: null,
+    profileInfo: {
+        isFetching: false,
+        data: null,
+    },
     status: '',
     postsArr: [
         { id: 1, message: `post-opost`, likesCount: 0 },
@@ -71,9 +76,11 @@ const profileReducer = (state = initialState, action) => {
         case UPDATE_NEW_POST_TEXT:
             return {...state, currentPostArea: action.newText};
         case SET_PROFILE_INFO:
-            return {...state, profileInfo: action.profileInfo};
+            return { ...state, profileInfo: { ...state.profileInfo, data: action.profileInfo}};
         case SET_STATUS:
             return {...state, status: action.status};
+        case TOGGLE_FETCHING_IN_PROGRESS:
+            return { ...state, profileInfo: { ...state.profileInfo, isFetching: action.isFetching}};
         default:
             return state;
     }

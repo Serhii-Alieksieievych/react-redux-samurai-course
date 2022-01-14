@@ -9,7 +9,7 @@ const ProfileInfoText = ({ profileInfo, isOwner, enebleEditMode }) => {
     contacts,
     lookingForAJob,
     lookingForAJobDescription
-  } = profileInfo;
+  } = profileInfo.data;
 
   if (!profileInfo) return <div> Loading... </div>
   return (

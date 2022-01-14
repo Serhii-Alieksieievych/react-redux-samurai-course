@@ -22,7 +22,7 @@ const ProfileInfoForm = ({ profileInfo, updateProfileInfo, disableEditMode }) =>
     <div className={classes.profileInfoForm}>
       <Form
         onSubmit={onSubmit}
-        initialValues={{...profileInfo}}
+        initialValues={{...profileInfo.data}}
         render={({ handleSubmit, form, submitting, pristine, values }) => (
           <form onSubmit={handleSubmit} className={classes.form}>
             <div onClick={closeHandler} className={classes.closeButtonWrapper}><CloseButton /></div>
