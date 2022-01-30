@@ -28,12 +28,10 @@ export const sendProfilePhoto = photo => {
 }
 
 export const setProfile = id => async dispatch => {
-    await console.log('huhl')
     dispatch(toggleFetching(true))
     const userId = id ? id : 21473;
     const data = await ProfileAPI.getProfileData(userId)
     dispatch(setProfileInfo(data))
-    dispatch(toggleFetching(false))
 }
 
 export const getStatus = id => async dispatch => {
@@ -76,7 +74,7 @@ const profileReducer = (state = initialState, action) => {
         case UPDATE_NEW_POST_TEXT:
             return {...state, currentPostArea: action.newText};
         case SET_PROFILE_INFO:
-            return { ...state, profileInfo: { ...state.profileInfo, data: action.profileInfo}};
+            return { ...state, profileInfo: { ...state.profileInfo, data: action.profileInfo, isFetching: false}};
         case SET_STATUS:
             return {...state, status: action.status};
         case TOGGLE_FETCHING_IN_PROGRESS:

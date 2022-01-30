@@ -6,6 +6,10 @@
   margin-bottom: 25px;
 }
 
+.avatarBlockWrapper {
+
+}
+
 .avatarBlock {
   margin-right: 10px;
   border: black 1px solid;
@@ -24,11 +28,18 @@
 }
 
 .profileInfoTextWrapper {
+  display: flex;
+  align-items: center;
   position: relative;
   width: 100%;
   border: black 1px solid;
   border-radius: 10px;
   padding: 15px;
+}
+
+.profileInfoText {
+  align-self: flex-start;
+  justify-self: flex-start;
 }
 
 .avatarImg {

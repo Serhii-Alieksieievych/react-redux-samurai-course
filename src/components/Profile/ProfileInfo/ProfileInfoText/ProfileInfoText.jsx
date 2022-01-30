@@ -1,6 +1,7 @@
 import React from "react";
 import classes from './ProfileInfoText.module.css';
 import EditButton from "../../../common/EditButton/EditButton";
+import Preloader from "../../../common/Preloader/Preloader";
 
 const ProfileInfoText = ({ profileInfo, isOwner, enebleEditMode }) => {
   const {
@@ -11,7 +12,7 @@ const ProfileInfoText = ({ profileInfo, isOwner, enebleEditMode }) => {
     lookingForAJobDescription
   } = profileInfo.data;
 
-  if (!profileInfo) return <div> Loading... </div>
+  
   return (
     <div className={classes.profileInfoText}>
       {isOwner && <div className={classes.editButton} onClick={enebleEditMode}><EditButton /></div>}

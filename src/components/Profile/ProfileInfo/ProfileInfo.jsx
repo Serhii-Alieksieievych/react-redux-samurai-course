@@ -17,19 +17,35 @@ const ProfileInfo = ({ isOwner, profileInfo, updateProfileInfo, sendProfilePhoto
   const disableEditMode = () => {
     setInEditMode(false);
   }
-  console.log(profileInfo.isFetching)
   return (
     <div className={classes.profileInfo}>
-      <div className={classes.AvatarBlockWrapper}>
+      <div className={classes.avatarBlockWrapper}>
         {!profileInfo.isFetching
-          ? <AvatarBlock avatarSrc={profileInfo.data.photos.large} sendProfilePhoto={sendProfilePhoto} isOwner={isOwner} {...props} />
+          ? <AvatarBlock
+              avatarSrc={profileInfo.data.photos.large}
+              sendProfilePhoto={sendProfilePhoto}
+              isOwner={isOwner}
+              {...props}
+            />
           : <Preloader/>
         }
       </div>
       <div className={classes.profileInfoTextWrapper}>
-        {inEditMode
-          ? <ProfileInfoForm {...props} profileInfo={profileInfo} updateProfileInfo={updateProfileInfo} disableEditMode={disableEditMode}/>
-          : <ProfileInfoText {...props} isOwner={isOwner} profileInfo={profileInfo} enebleEditMode={enebleEditMode}/>
+        {profileInfo.isFetching
+          ? <Preloader />
+          : inEditMode
+            ? <ProfileInfoForm
+                {...props}
+                profileInfo={profileInfo}
+                updateProfileInfo={updateProfileInfo}
+                disableEditMode={disableEditMode}
+              />
+            : <div className={classes.profileInfoText}><ProfileInfoText
+                {...props}
+                isOwner={isOwner}
+                profileInfo={profileInfo}
+                enebleEditMode={enebleEditMode}
+            /></div>
         }
       </div>
     </div>    
