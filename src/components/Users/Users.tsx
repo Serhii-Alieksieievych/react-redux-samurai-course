@@ -3,8 +3,20 @@ import classes from './Users.module.css';
 import userPhoto from "../../assets/img/Opossums.jpg"
 import { Link } from "react-router-dom";
 import Paginator from "../common/Paginator/Paginator";
+import { UserType } from "../../types/UsersTypes";
 
-const users = ({
+type UsersPropsType = {
+    users: Array<UserType>,
+    follow: (user: UserType) => void,
+    unfollow: (user: UserType) => void,
+    totalCount: number,
+    pageSize: number,
+    currentPage: number,
+    getUsers: (currentPage: number) => Promise<void>,
+    haveFollowingInProgress: Array<number>,
+}
+
+const Users: React.FC<UsersPropsType> = ({
     users,
     follow,
     unfollow,
@@ -25,7 +37,7 @@ const users = ({
             />
             <ul className={classes.usersWrapper} >
                 {
-                    users.map(user => (
+                    users.map((user: UserType) => (
                         <li className={classes.userCard} key={user.id}>
                             <Link to={`../profile/${user.id}`}>
                                 <img
@@ -37,7 +49,7 @@ const users = ({
                             {user.followed
                                 ?
                                 <button
-                                    disabled={haveFollowingInProgress.some(id => id === user.id)}
+                                    disabled={haveFollowingInProgress.some((id: number): boolean => id === user.id)}
                                     className={classes.btn}
                                     onClick={() => {
                                         unfollow(user)
@@ -47,7 +59,7 @@ const users = ({
                                 </button>
                                 :
                                 <button
-                                    disabled={haveFollowingInProgress.some(id => id === user.id)}
+                                    disabled={haveFollowingInProgress.some((id: number) :boolean => id === user.id)}
                                     className={classes.btn}
                                     onClick={() => {
                                         follow(user)
@@ -58,8 +70,6 @@ const users = ({
                             }
                             <h3>{user.name}</h3>
                             <p>{user.status}</p>
-                            <p>{user.state}</p>
-                            <p>{user.city}</p>
                         </li>
                     ))
                 }
@@ -68,4 +78,4 @@ const users = ({
     )
 }
 
-export default users;
+export default Users;

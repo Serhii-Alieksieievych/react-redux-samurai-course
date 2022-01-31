@@ -1,7 +1,7 @@
 import React from "react";
 import classes from "./CustomForms.module.css";
 
-export const CustomField = ({ input, meta, ...props }) => {
+export const CustomField = ({ input, meta, ...props } :any) => {
     const hasError = meta.error && meta.touched
     return (
         <div className={`${classes.textareaWrapper} ${hasError && classes.error}`}>
@@ -14,10 +14,10 @@ export const CustomField = ({ input, meta, ...props }) => {
     )
 }
 
-const Textarea = (props) => (
+const Textarea = (props :any) => (
     <textarea {...props} className={classes.textarea}></textarea>
 )
 
-const Input = (props) => (
+const Input = (props :any) => (
     <input {...props} className={classes.input}/>
 )

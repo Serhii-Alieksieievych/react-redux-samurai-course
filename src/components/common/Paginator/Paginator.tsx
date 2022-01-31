@@ -1,7 +1,13 @@
 import React from "react";
 import classes from './Paginator.module.css';
+type PaginatorPropsType = {
+    totalCount :number,
+    pageSize :number,
+    currentPage :number,
+    getUsers: (currentPage: number) => void,
+}
 
-const Paginator = ({
+const Paginator: React.FC<PaginatorPropsType> = ({
     totalCount,
     pageSize,
     currentPage,

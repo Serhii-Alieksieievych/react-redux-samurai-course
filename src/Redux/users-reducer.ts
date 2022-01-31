@@ -1,11 +1,12 @@
 import { UsersAPI, FollowAPI } from "../api/api";
+import { UserType, SetCurrentPageType, ToggleFollowingStatusType } from "../types/UsersTypes";
 
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
 const SET_STATE = 'SET-STATE';
-const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
+export const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 const TOGGLE_FETCHING_STATUS = 'TOGGLE_FETCHING_STATUS';
-const TOGGLE_FOLLOWING_STATUS = 'TOGGLE_FOLLOWING_STATUS'
+export const TOGGLE_FOLLOWING_STATUS = 'TOGGLE_FOLLOWING_STATUS'
 
 type InitialStateType = {
     users: Array<UserType>,
@@ -15,29 +16,20 @@ type InitialStateType = {
     isFetching: boolean,
     haveFollowingInProgress: Array<number>,
 }
-type UserType = {
-    id: number,
-    name: string,
-    status: string,
-    photos: {
-        small: string | null,
-        large: string | null,
-    },
-    followed: boolean,
-}
+
 type FollowType = { type: typeof FOLLOW, id: number }
 type UnfollowType = { type: typeof UNFOLLOW, id: number }
 type SetStateType = { type: typeof SET_STATE, users: Array<UserType>, totalCount: number }
-type SetCurrentPageType = { type: typeof SET_CURRENT_PAGE, currentPage: number }
+
 type ToggleIsFetchingType = { type: typeof TOGGLE_FETCHING_STATUS, isFetching: boolean }
-type ToggleFollowingStatusType = { type: typeof TOGGLE_FOLLOWING_STATUS, id: number }
+
 
 export const follow = (id: number) :FollowType => ({ type: FOLLOW, id: id })
 export const unfollow = (id: number) :UnfollowType => ({ type: UNFOLLOW, id: id })
 export const setState = (users: Array<UserType>, totalCount: number) :SetStateType=> (
     { type: SET_STATE, users, totalCount }
 )
-export const setCurrentPage = (page: number) :SetCurrentPageType=> ({ type: SET_CURRENT_PAGE, currentPage: page })
+export const setCurrentPage = (page: number) :SetCurrentPageType => ({ type: SET_CURRENT_PAGE, currentPage: page })
 export const toggleIsFetching = (isFetching: boolean) :ToggleIsFetchingType => (
     { type: TOGGLE_FETCHING_STATUS, isFetching }
 )
@@ -103,7 +95,7 @@ const usersReducer = (state = initialState, action: any) : InitialStateType => {
         case TOGGLE_FETCHING_STATUS:
             return { ...state, isFetching: action.isFetching }
         case TOGGLE_FOLLOWING_STATUS:
-            return state.haveFollowingInProgress.some(id => id === action.id)
+            return state.haveFollowingInProgress.some((id :number) => id === action.id)
                 ? { ...state, haveFollowingInProgress: state.haveFollowingInProgress.filter(id => id !== action.id) }
                 : { ...state, haveFollowingInProgress: [...state.haveFollowingInProgress, action.id] }
         default:

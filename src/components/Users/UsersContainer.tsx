@@ -7,7 +7,7 @@ import {
 } from "../../Redux/users-reducer";
 import { followTC, unfollowTC } from "../../Redux/users-reducer";
 import React from "react";
-import { Grid } from 'svg-loaders-react'
+import Preloader from "../common/Preloader/Preloader";
 import Users from "./Users";
 import { withAuthRedirect } from "../../hoc/withAuthRedirect";
 import { compose } from "redux";
@@ -19,11 +19,27 @@ import {
     getTotalUsersCountSelector,
     getUsersByReselectorSelector,
 } from "../../Redux/users-selectors";
+import { AppStateType } from "../../Redux/redux-store";
+import { UserType, SetCurrentPageType, ToggleFollowingStatusType } from "../../types/UsersTypes";
 
+type UsersAPIContainerPropsType = {
+    users: Array<UserType>,
+    followTC: (user: UserType) => Promise<void>,
+    unfollowTC: (user: UserType) => Promise<void>,
+    totalCount: number,
+    pageSize: number,
+    currentPage: number,
+    isFetching: boolean,
+    haveFollowingInProgress: Array<number>,
+    toggleFollowingStatus: (id: number) => ToggleFollowingStatusType,
+    getUsers: (currentPage: number) => Promise<void>,
+    isAuthorised: boolean,
+    setCurrentPage: (page: number)=> SetCurrentPageType,
+}
 
-class usersAPIComponent extends React.Component {
+class UsersAPIComponent extends React.Component<UsersAPIContainerPropsType> {
     componentDidMount() {
-        this.props.getUsers()
+        this.props.getUsers(1)
 
     }
     render() {
@@ -36,7 +52,6 @@ class usersAPIComponent extends React.Component {
             currentPage,
             isFetching,
             haveFollowingInProgress,
-            toggleFollowingStatus,
             getUsers,
             isAuthorised,
             setCurrentPage,
@@ -49,7 +64,7 @@ class usersAPIComponent extends React.Component {
                 justifyContent: 'center',
                 height: '90vh'
             }}>
-                <Grid />
+                <Preloader />
             </div>
             : <Users
                 users={users}
@@ -59,16 +74,13 @@ class usersAPIComponent extends React.Component {
                 pageSize={pageSize}
                 currentPage={currentPage}
                 getUsers={getUsers}
-                toggleFollowingStatus={toggleFollowingStatus}
                 haveFollowingInProgress={haveFollowingInProgress}
-                isAuthorised={isAuthorised}
-                setCurrentPage={setCurrentPage}
             />
         )
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state :AppStateType) => ({
     users: getUsersByReselectorSelector(state),
     totalCount: getTotalUsersCountSelector(state),
     pageSize: getPageSizeSelector(state),
@@ -76,24 +88,6 @@ const mapStateToProps = (state) => ({
     isFetching: getIsFetchingSelector(state),
     haveFollowingInProgress: getHaveFollowingInProgressSelector(state),
 })
-
-/*const mapDispatchToProps = (dispatch) => ({
-    follow: id => {
-        dispatch(followActionCreator(id))
-    },
-    unfollow: id => {
-        dispatch(unfollowActionCreator(id))
-    },
-    setusers: (users, totalCount) => {
-        dispatch(setStateActionCreator(users, totalCount))
-    },
-    setCurrentPage: page => {
-        dispatch(setCurrentPageAC(page))
-    },
-    toggleIsFetching: (isFetching)=>{
-        dispatch(toggleFetchingStatusAC(isFetching))
-    }
-})*/
 
 export default compose(
     connect(mapStateToProps, {
@@ -104,4 +98,4 @@ export default compose(
         toggleFollowingStatus,
         getUsers,
     }),
-    withAuthRedirect)(usersAPIComponent)
+    withAuthRedirect)(UsersAPIComponent)
