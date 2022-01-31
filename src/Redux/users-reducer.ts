@@ -7,22 +7,50 @@ const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 const TOGGLE_FETCHING_STATUS = 'TOGGLE_FETCHING_STATUS';
 const TOGGLE_FOLLOWING_STATUS = 'TOGGLE_FOLLOWING_STATUS'
 
-export const follow = (id) => ({ type: FOLLOW, id: id })
-export const unfollow = (id) => ({ type: UNFOLLOW, id: id })
-export const setState = (users, totalCount) => ({ type: SET_STATE, users, totalCount })
-export const setCurrentPage = (page) => ({ type: SET_CURRENT_PAGE, currentPage: page })
-export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_FETCHING_STATUS, isFetching })
-export const toggleFollowingStatus = (id) => ({ type: TOGGLE_FOLLOWING_STATUS, id })
+type InitialStateType = {
+    users: Array<UserType>,
+    totalCount: number,
+    pageSize: number,
+    currentPage: number,
+    isFetching: boolean,
+    haveFollowingInProgress: Array<number>,
+}
+type UserType = {
+    id: number,
+    name: string,
+    status: string,
+    photos: {
+        small: string | null,
+        large: string | null,
+    },
+    followed: boolean,
+}
+type FollowType = { type: typeof FOLLOW, id: number }
+type UnfollowType = { type: typeof UNFOLLOW, id: number }
+type SetStateType = { type: typeof SET_STATE, users: Array<UserType>, totalCount: number }
+type SetCurrentPageType = { type: typeof SET_CURRENT_PAGE, currentPage: number }
+type ToggleIsFetchingType = { type: typeof TOGGLE_FETCHING_STATUS, isFetching: boolean }
+type ToggleFollowingStatusType = { type: typeof TOGGLE_FOLLOWING_STATUS, id: number }
 
-export const getUsers = (currentPage = 1) => async (dispatch) => {
+export const follow = (id: number) :FollowType => ({ type: FOLLOW, id: id })
+export const unfollow = (id: number) :UnfollowType => ({ type: UNFOLLOW, id: id })
+export const setState = (users: Array<UserType>, totalCount: number) :SetStateType=> (
+    { type: SET_STATE, users, totalCount }
+)
+export const setCurrentPage = (page: number) :SetCurrentPageType=> ({ type: SET_CURRENT_PAGE, currentPage: page })
+export const toggleIsFetching = (isFetching: boolean) :ToggleIsFetchingType => (
+    { type: TOGGLE_FETCHING_STATUS, isFetching }
+)
+export const toggleFollowingStatus = (id: number) :ToggleFollowingStatusType => ({ type: TOGGLE_FOLLOWING_STATUS, id })
+
+export const getUsers = (currentPage = 1) => async (dispatch: any) => {
     dispatch(toggleIsFetching(true))
     dispatch(setCurrentPage(currentPage))
     const data = await UsersAPI.getUsers(currentPage)
     dispatch(toggleIsFetching(false))
     dispatch(setState(data.items, data.totalCount))
 };
-
-export const followTC = (user) => async (dispatch) => {
+export const followTC = (user: UserType) => async (dispatch: any) => {
     dispatch(toggleFollowingStatus(user.id))
     const data = await FollowAPI.followAxios(user)
     if (data.resultCode === 0) {
@@ -30,8 +58,7 @@ export const followTC = (user) => async (dispatch) => {
     }
     dispatch(toggleFollowingStatus(user.id))
 }
-
-export const unfollowTC = (user) => async (dispatch) => {
+export const unfollowTC = (user: UserType) => async (dispatch: any) => {
     dispatch(toggleFollowingStatus(user.id))
     const data = await FollowAPI.unfollowAxios(user)
     if (data.resultCode === 0) {
@@ -49,11 +76,11 @@ const initialState = {
     haveFollowingInProgress: [],
 }
 
-const usersReducer = (state = initialState, action) => {
+const usersReducer = (state = initialState, action: any) : InitialStateType => {
     switch (action.type) {
         case FOLLOW:
             return {
-                ...state, users: state.users.map(user => {
+                ...state, users: state.users.map((user: UserType) :UserType => {
                     return user.id === action.id
                         ? { ...user, followed: true }
                         : { ...user };
@@ -62,7 +89,7 @@ const usersReducer = (state = initialState, action) => {
         case UNFOLLOW:
             return {
                 ...state,
-                users: state.users.map(user => {
+                users: state.users.map((user: UserType): UserType => {
                     return user.id === action.id
                         ? { ...user, followed: false }
                         : { ...user };

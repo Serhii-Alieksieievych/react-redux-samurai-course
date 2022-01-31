@@ -1,7 +1,7 @@
-import profileReducer, {addPostActionCreator} from "../profile-reducer";
+import profileReducer, {addPost} from "../profile-reducer";
 
 it('new post should be added', () => {
-    let action = addPostActionCreator('oppos')
+    let action = addPost('oppos')
     let state = {
         postsArr: [
             { id: 1, message: `post-opost`, likesCount: 0 },
