@@ -2,7 +2,11 @@
 import React from "react";
 import classes from './Header.module.css';
 
-const LogoutButton = ({ logoutTC }) => {
+type LogoutButtonProps = {
+    logoutTC: () => void
+}
+
+const LogoutButton :React.FC<LogoutButtonProps> = ({ logoutTC }) => {
     return (
         <button onClick={() => { logoutTC() }}>Log out</button>
     )

@@ -9,7 +9,7 @@ const LOGOUT = 'LOGOUT';
 const RESET_AUTH = "RESET_AUTH";
 const SET_CAPTCHA_URL = "SET_CAPTCHA_URL"
 
-type InitialStateType = {
+export type AuthInitialStateType = {
     id: number | null,
     email: string | null,
     login: string | null,
@@ -131,7 +131,7 @@ export const checkAutorization = () => (dispatch :any) => {
     })
 }
 
-const initialState : InitialStateType = {
+const initialState : AuthInitialStateType = {
     id: null,
     email: null,
     login: null,
@@ -143,7 +143,7 @@ const initialState : InitialStateType = {
     userId: null,
 }
 
-const authReducer = (state: InitialStateType = initialState, action :any): InitialStateType => {
+const authReducer = (state: AuthInitialStateType = initialState, action :any): AuthInitialStateType => {
     switch (action.type) {
         case SET_AUTH:
             return {...state, ...action.data};

@@ -68,7 +68,7 @@ const initialState = {
     haveFollowingInProgress: [],
 }
 
-const usersReducer = (state = initialState, action: any) : InitialStateType => {
+const usersReducer = (state :InitialStateType = initialState, action: any) : InitialStateType => {
     switch (action.type) {
         case FOLLOW:
             return {

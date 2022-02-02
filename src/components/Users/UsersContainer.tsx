@@ -37,6 +37,15 @@ type UsersAPIContainerPropsType = {
     setCurrentPage: (page: number)=> SetCurrentPageType,
 }
 
+type PropsFromStateType = {
+    users: Array<UserType>,
+    totalCount: number,
+    pageSize: number,
+    currentPage: number,
+    isFetching: boolean,
+    haveFollowingInProgress: Array<number>,
+}
+
 class UsersAPIComponent extends React.Component<UsersAPIContainerPropsType> {
     componentDidMount() {
         this.props.getUsers(1)
@@ -53,8 +62,6 @@ class UsersAPIComponent extends React.Component<UsersAPIContainerPropsType> {
             isFetching,
             haveFollowingInProgress,
             getUsers,
-            isAuthorised,
-            setCurrentPage,
         } = this.props;
 
         return (isFetching
@@ -80,7 +87,7 @@ class UsersAPIComponent extends React.Component<UsersAPIContainerPropsType> {
     }
 }
 
-const mapStateToProps = (state :AppStateType) => ({
+const mapStateToProps = (state :AppStateType) :PropsFromStateType => ({
     users: getUsersByReselectorSelector(state),
     totalCount: getTotalUsersCountSelector(state),
     pageSize: getPageSizeSelector(state),
