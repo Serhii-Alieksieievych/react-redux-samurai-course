@@ -5,6 +5,9 @@ import {
     toggleFollowingStatus,
     getUsers,
 } from "../../Redux/users-reducer";
+import {
+    startNewDialogFromUsersPage,
+} from "../../Redux/dialogs-reducer";
 import { followTC, unfollowTC } from "../../Redux/users-reducer";
 import React from "react";
 import Preloader from "../common/Preloader/Preloader";
@@ -35,6 +38,7 @@ type UsersAPIContainerPropsType = {
     getUsers: (currentPage: number) => Promise<void>,
     isAuthorised: boolean,
     setCurrentPage: (page: number)=> SetCurrentPageType,
+    startNewDialogFromUsersPage: (id:number)=>Promise<void>
 }
 
 type PropsFromStateType = {
@@ -62,6 +66,7 @@ class UsersAPIComponent extends React.Component<UsersAPIContainerPropsType> {
             isFetching,
             haveFollowingInProgress,
             getUsers,
+            startNewDialogFromUsersPage,
         } = this.props;
 
         return (isFetching
@@ -82,6 +87,7 @@ class UsersAPIComponent extends React.Component<UsersAPIContainerPropsType> {
                 currentPage={currentPage}
                 getUsers={getUsers}
                 haveFollowingInProgress={haveFollowingInProgress}
+                startNewDialogFromUsersPage={startNewDialogFromUsersPage}
             />
         )
     }
@@ -104,5 +110,6 @@ export default compose(
         toggleIsFetching,
         toggleFollowingStatus,
         getUsers,
+        startNewDialogFromUsersPage,
     }),
     withAuthRedirect)(UsersAPIComponent)

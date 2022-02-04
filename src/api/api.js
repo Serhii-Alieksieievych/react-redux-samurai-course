@@ -39,7 +39,6 @@ export const ProfileAPI = {
         )
     },
     setProfileData(data) {
-        console.log(data)
         return (
             instance.put(`/profile/`, data).then(resp => resp.data)
         )
@@ -100,3 +99,23 @@ export const AuthAPI = {
         )
     }
 }
+ export const dialogsApi = {
+    getDialogs: () => instance.get('/dialogs').then(resp => {
+        return resp.data
+    }),
+
+    getMessages(id){
+        return instance.get(`dialogs/${id}/messages`).then(resp => {
+            return resp.data
+        })
+    },
+    startChattngWithUser(id) {
+        return instance.put(`dialogs/${id}`,{userId: id}).then(resp=>resp.data)
+    },
+    sendMessage(id, message){
+        return instance.post(`dialogs/${id}/messages`,{body: message}).then(resp => {
+            return resp.data
+        })
+    },
+
+ }

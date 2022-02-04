@@ -4,8 +4,9 @@ import ProfileStatus from "../ProfileStatus/ProfileStatus";
 import ava from "../../../../img/racoon_ava.jpeg";
 import { useState } from "react";
 import CloseButton from "../../../common/CloseButton/CloseButton";
+import { Link } from "react-router-dom";
 
-const AvatarBlock= ({ isOwner, avatarSrc, sendProfilePhoto, ...props}) => {
+const AvatarBlock = ({ isOwner, avatarSrc, sendProfilePhoto, profileInfo, startNewDialogFromUsersPage, ...props}) => {
   const [photoInEditMode, setPhotoInEditMode] = useState(false);
   const [newPhoto, setNewPhoto] = useState(null); 
 
@@ -38,38 +39,47 @@ const AvatarBlock= ({ isOwner, avatarSrc, sendProfilePhoto, ...props}) => {
       />}
       <img
         className={classes.avatarImg}
-        src={avatarSrc|| ava}
+        src={avatarSrc || ava}
         alt="ava"
       />
-      {isOwner && <div className={classes.avatarSettingBlock}>
-        {!photoInEditMode
-          ? <div
-              className={classes.avatarSettingBlockHeader}
-              onClick={enebleSetPhotoEditMode}
-            >
-              Set new photo
-            </div>
-          : <div>
-              <input
-                type={"file"}
-                onChange={onPhotoSelect}
-                className={classes.newAvatarInput}
-              />
-              <button
-                onClick={sendNewPhoto}
-                className={classes.newAvatarSendButton}
-                disabled={!newPhoto}
+      {isOwner
+        ? <div className={classes.avatarSettingBlock}>
+          {!photoInEditMode
+            ? <div
+                className={classes.avatarSettingBlockHeader}
+                onClick={enebleSetPhotoEditMode}
               >
                 Set new photo
-              </button>
-              <div
-                className={classes.closeButton}
-                onClick={disableSetPhotoEditMode}
-              >
-                <CloseButton size="30px" />
               </div>
-            </div>}
-      </div>}
+            : <div>
+                <input
+                  type={"file"}
+                  onChange={onPhotoSelect}
+                  className={classes.newAvatarInput}
+                />
+                <button
+                  onClick={sendNewPhoto}
+                  className={classes.newAvatarSendButton}
+                  disabled={!newPhoto}
+                >
+                  Set new photo
+                </button>
+                <div
+                  className={classes.closeButton}
+                  onClick={disableSetPhotoEditMode}
+                >
+                  <CloseButton size="30px" />
+                </div>
+              </div>}
+        </div>
+        : <Link
+          to={`../../dialogs/`}
+          className={classes.avatarSettingBlock}
+          onClick={() => {
+            startNewDialogFromUsersPage(profileInfo.data.userId)
+          }}
+        > START DIALOG </Link>
+        }
     </div>  
   )
 }

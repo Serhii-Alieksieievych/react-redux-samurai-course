@@ -1,9 +1,11 @@
-import React from "react";
+ import React from "react";
 import MyPostsContainer from "./MyPosts/MyPostsContainer";
 import classes from './Profile.module.css';
+import { ProfileContainerPropsType } from "./ProfileContainer";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
 
-const Profile = (props) => {
+type ProfilePropsType = ProfileContainerPropsType & {isOwner: boolean}
+const Profile: React.FC<ProfilePropsType>= (props) => {
   return (
     <main className={classes.content}>
       {/*<div>

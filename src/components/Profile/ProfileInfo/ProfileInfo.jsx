@@ -9,7 +9,6 @@ import Preloader from "../../common/Preloader/Preloader";
 
 const ProfileInfo = ({ isOwner, profileInfo, updateProfileInfo, sendProfilePhoto, ...props}) => {
   const [inEditMode, setInEditMode] = useState(false);
-
   const enebleEditMode = () => {
     setInEditMode(true);
   }
@@ -25,6 +24,7 @@ const ProfileInfo = ({ isOwner, profileInfo, updateProfileInfo, sendProfilePhoto
               avatarSrc={profileInfo.data.photos.large}
               sendProfilePhoto={sendProfilePhoto}
               isOwner={isOwner}
+              profileInfo={profileInfo}
               {...props}
             />
           : <Preloader/>

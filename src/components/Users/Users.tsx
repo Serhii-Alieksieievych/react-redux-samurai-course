@@ -4,6 +4,7 @@ import userPhoto from "../../assets/img/Opossums.jpg"
 import { Link } from "react-router-dom";
 import Paginator from "../common/Paginator/Paginator";
 import { UserType } from "../../types/UsersTypes";
+import { sendMessage } from "../../Redux/dialogs-reducer";
 
 type UsersPropsType = {
     users: Array<UserType>,
@@ -14,6 +15,7 @@ type UsersPropsType = {
     currentPage: number,
     getUsers: (currentPage: number) => Promise<void>,
     haveFollowingInProgress: Array<number>,
+    startNewDialogFromUsersPage: (id:number)=>Promise<void>,
 }
 
 const Users: React.FC<UsersPropsType> = ({
@@ -25,6 +27,7 @@ const Users: React.FC<UsersPropsType> = ({
     currentPage,
     getUsers,
     haveFollowingInProgress,
+    startNewDialogFromUsersPage,
 }) => {
 
     return (
@@ -68,6 +71,11 @@ const Users: React.FC<UsersPropsType> = ({
                                     FOLLOW
                                 </button>
                             }
+                            <Link
+                                to={`../dialogs/`}
+                                className={classes.btn}
+                                onClick={() => { startNewDialogFromUsersPage(user.id)}}
+                            > START DIALOG </Link>
                             <h3>{user.name}</h3>
                             <p>{user.status}</p>
                         </li>

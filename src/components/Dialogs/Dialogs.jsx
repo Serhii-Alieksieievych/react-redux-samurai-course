@@ -1,28 +1,38 @@
-import React from "react";
+import React, { useEffect } from "react";
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
 import classes from './Dialogs.module.css';
 import DialogReduxForm from "./DialogForm/DialogForm";
 
-const Dialogs = ({ sendMessage, dialogs, messages}) => {
+const Dialogs = ({
+    sendMessage,
+    dialogs,
+    messages,
+    refreshDialogs,
+    refreshMessages,
+    currentDialog
+}) => {
+    useEffect(() => {
+        refreshDialogs()
+    }, [])
     return (
         <div className={classes.dialogs}>
             <div className={classes.dialogsItems}>
                 {dialogs.map(dialog=>{
-                    const {id, name} = dialog;
-                    return <DialogItem id={id} key={id} name={name}/>
+                    return <DialogItem key={dialog.id} dialog={dialog} refreshMessages={refreshMessages}/>
                 })}
             </div>
             <div className={classes.messages}>
-                {messages.map(message => <Message
+                <img src={currentDialog.photos.small && currentDialog.photos.small} alt="avatar"/>
+                <h3>Name: {currentDialog.userName}</h3>
+                <p>Last user's activity date: {currentDialog.lastUserActivityDate}</p>
+                {messages.items.map(message => <Message
                     key={message.id}
-                    id={message.id}
-                    message={message.message}
-                    userId={message.userId}
+                    message={message}
                 />)}
             </div>
             <DialogReduxForm onSubmit={(data)=>{
-                sendMessage(data.message)
+                sendMessage([currentDialog, data.message])
                 data.message=''
             }} />
         </div>

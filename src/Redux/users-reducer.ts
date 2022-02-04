@@ -17,12 +17,13 @@ type InitialStateType = {
     haveFollowingInProgress: Array<number>,
 }
 
+type ActionsTypes = FollowType | UnfollowType | SetStateType
+    | ToggleIsFetchingType | ToggleFollowingStatusType | SetCurrentPageType
+
 type FollowType = { type: typeof FOLLOW, id: number }
 type UnfollowType = { type: typeof UNFOLLOW, id: number }
 type SetStateType = { type: typeof SET_STATE, users: Array<UserType>, totalCount: number }
-
 type ToggleIsFetchingType = { type: typeof TOGGLE_FETCHING_STATUS, isFetching: boolean }
-
 
 export const follow = (id: number) :FollowType => ({ type: FOLLOW, id: id })
 export const unfollow = (id: number) :UnfollowType => ({ type: UNFOLLOW, id: id })
@@ -68,7 +69,7 @@ const initialState = {
     haveFollowingInProgress: [],
 }
 
-const usersReducer = (state :InitialStateType = initialState, action: any) : InitialStateType => {
+const usersReducer = (state :InitialStateType = initialState, action: ActionsTypes) : InitialStateType => {
     switch (action.type) {
         case FOLLOW:
             return {

@@ -2,12 +2,17 @@
     padding: 5px;
     border: black solid 1px;
     margin: 10px;
+    background-color: cadetblue;
 }
 
-.outer {
+.myMessage {
     align-self: flex-start;
 }
 
-.inner {
+.notMyMessage {
     align-self: flex-end;
+}
+
+.viewed {
+    background-color: coral;
 }
