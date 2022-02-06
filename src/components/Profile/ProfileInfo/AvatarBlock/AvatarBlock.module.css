@@ -45,7 +45,7 @@
 }
 
 .avatarImg {
-  object-fit: cover;
+  object-fit: contain;
   height: 360px;
   width: 320px;
   border-radius: 10px;

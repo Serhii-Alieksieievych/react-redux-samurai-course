@@ -1,6 +1,6 @@
 import React from "react";
 import classes from './Users.module.css';
-import userPhoto from "../../assets/img/Opossums.jpg"
+import avatar from "../../assets/img/avatars/small_ava.jpg"
 import { Link } from "react-router-dom";
 import Paginator from "../common/Paginator/Paginator";
 import { UserType } from "../../types/UsersTypes";
@@ -44,7 +44,7 @@ const Users: React.FC<UsersPropsType> = ({
                         <li className={classes.userCard} key={user.id}>
                             <Link to={`../profile/${user.id}`}>
                                 <img
-                                    src={user.photos.small ? user.photos.small : userPhoto}
+                                    src={user.photos.small || avatar}
                                     className={classes.avatar}
                                     alt="User"
                                 />
@@ -82,6 +82,12 @@ const Users: React.FC<UsersPropsType> = ({
                     ))
                 }
             </ul>
+            <Paginator
+                totalCount={totalCount}
+                pageSize={pageSize}
+                currentPage={currentPage}
+                getUsers={getUsers}
+            />
         </div>
     )
 }

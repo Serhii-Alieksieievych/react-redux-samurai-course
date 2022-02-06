@@ -1,7 +1,7 @@
 import React from "react";
 import classes from './AvatarBlock.module.css';
 import ProfileStatus from "../ProfileStatus/ProfileStatus";
-import ava from "../../../../img/racoon_ava.jpeg";
+import avatar from "../../../../assets/img/avatars/big_ava.jpg";
 import { useState } from "react";
 import CloseButton from "../../../common/CloseButton/CloseButton";
 import { Link } from "react-router-dom";
@@ -39,7 +39,7 @@ const AvatarBlock = ({ isOwner, avatarSrc, sendProfilePhoto, profileInfo, startN
       />}
       <img
         className={classes.avatarImg}
-        src={avatarSrc || ava}
+        src={avatarSrc || avatar}
         alt="ava"
       />
       {isOwner
