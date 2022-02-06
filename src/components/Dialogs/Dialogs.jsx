@@ -3,6 +3,7 @@ import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
 import classes from './Dialogs.module.css';
 import DialogReduxForm from "./DialogForm/DialogForm";
+import CurrentDialogInfo from "./CurrentDialogInfo/CurrentDialogInfo";
 
 const Dialogs = ({
     sendMessage,
@@ -14,18 +15,18 @@ const Dialogs = ({
 }) => {
     useEffect(() => {
         refreshDialogs()
+        console.log(currentDialog)
     }, [])
     return (
         <div className={classes.dialogs}>
             <div className={classes.dialogsItems}>
+                <h3>You have n new messages!</h3>
                 {dialogs.map(dialog=>{
                     return <DialogItem key={dialog.id} dialog={dialog} refreshMessages={refreshMessages}/>
                 })}
             </div>
             <div className={classes.messages}>
-                <img src={currentDialog.photos.small && currentDialog.photos.small} alt="avatar"/>
-                <h3>Name: {currentDialog.userName}</h3>
-                <p>Last user's activity date: {currentDialog.lastUserActivityDate}</p>
+                {currentDialog && <CurrentDialogInfo currentDialog={currentDialog}/>}
                 {messages.items.map(message => <Message
                     key={message.id}
                     message={message}

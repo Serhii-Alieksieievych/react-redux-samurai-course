@@ -117,5 +117,36 @@ export const AuthAPI = {
             return resp.data
         })
     },
+    checkIsMessageViewed(messageId){
+        return instance.get(`dialogs/messages/${messageId}/viewed`).then(resp => {
+            return resp.data
+        })
+    },
+    setMessageToSpam( messageId ){
+        return instance.post(`dialogs/messages/${messageId}/spam`, { body: messageId }).then(resp => {
+            return resp.data
+        })
+    },
+    deleteMessage( messageId ){
+        return instance.delete(
+            `dialogs/messages/${messageId}`,
+        ).then(response => response.data)
+    },
+    restoreMessage( messageId ){
+        return instance.put(
+            `dialogs/messages/${messageId}/restore`,
+            { messageId }
+        ).then(resp => resp.data)
+    },
+    getMessagesNewestThan( userId, date ){
+        return instance.get(`dialogs/${userId}/messages/new?newerThen=${date}`).then(resp => {
+            return resp.data
+        })
+    },
+    getCountNewMessages(){
+        return instance.get(`dialogs/messages/new/count`).then(resp => {
+            return resp.data
+        })
+    }
 
  }

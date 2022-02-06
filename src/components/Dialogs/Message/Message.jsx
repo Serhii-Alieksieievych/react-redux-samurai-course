@@ -1,4 +1,5 @@
 import React from "react";
+import CloseButton from "../../common/CloseButton/CloseButton";
 import classes from './Message.module.css';
 
 const Message = ({message}) => {
@@ -10,6 +11,8 @@ const Message = ({message}) => {
         >
             Текст: {message.body}<br/>
             Відправлено: {message.addedAt}
+            <button>Delete</button>
+            <button>To spam</button>
         </div>
     )
 }

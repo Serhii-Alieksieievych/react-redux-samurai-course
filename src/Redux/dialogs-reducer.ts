@@ -28,7 +28,7 @@ export const changeNewMessage = (text: string) :ChangeNewMessageType => (
 
 const initialState = {
     dialogs: [] as Array<DialogType>,
-    currentDialog: {
+    currentDialog: null,/*{
         hasNewMessages: false,
         id: 1,
         lastDialogActivityDate: 'string',
@@ -39,7 +39,7 @@ const initialState = {
             large: 'string',
         },
         userName: 'opps',
-    },
+    },*/
     currentСollocutorsName: null,
     currentMessage: '',
     messages: { items: [], totalCount: 0, error: null },
@@ -61,8 +61,9 @@ export const startNewDialogFromUsersPage = (id: number) => async (dispatch: Disp
 export const refreshMessages = (dialog: DialogType) : any => async (dispatch: Dispatch):Promise<void> => {
     dispatch(setCurrentDialog(dialog))
     let data = await dialogsApi.getMessages(dialog.id)
+    
     await dispatch({type: REFRESH_MESSAGES, messages: data})
-    let data2 = await dialogsApi.startChattngWithUser(dialog.id)// Create 429error
+    await dialogsApi.startChattngWithUser(dialog.id)// Create 429error
     dispatch(refreshDialogs())
 }
 

@@ -14,6 +14,7 @@ const DialogItem = ({dialog, refreshMessages}) => {
             {//<Link className={classes.dialogLink} to={path}>
                 dialog.userName
             /*</Link>*/}
+            <div>New messages: {dialog.newMessagesCount}</div>
         </div>
     )
 }
