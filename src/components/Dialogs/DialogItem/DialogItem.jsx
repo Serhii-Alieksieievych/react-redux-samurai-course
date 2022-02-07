@@ -12,11 +12,15 @@ const DialogItem = ({dialog, refreshMessages}) => {
     //const path = '/dialogs/' + dialog.id;
     return (
         <div className={classes.dialogItem} onClick={clickHandler}>
-            {//<Link className={classes.dialogLink} to={path}>
-                dialog.userName
-            /*</Link>*/}
-            <div>New messages: {dialog.newMessagesCount}</div>
-            <img src={dialog.photos.small || smallAva}/>
+            <img src={dialog.photos.small || smallAva} className={classes.avatar}/>
+            <div className={classes.stringes}>
+                {//<Link className={classes.dialogLink} to={path}>
+                    <h3>
+                        {dialog.userName}
+                    </h3>
+                /*</Link>*/}
+                <div>New messages: {dialog.newMessagesCount}</div>
+            </div>
         </div>
     )
 }

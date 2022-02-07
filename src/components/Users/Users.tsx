@@ -4,7 +4,7 @@ import avatar from "../../assets/img/avatars/small_ava.jpg"
 import { Link } from "react-router-dom";
 import Paginator from "../common/Paginator/Paginator";
 import { UserType } from "../../types/UsersTypes";
-import { sendMessage } from "../../Redux/dialogs-reducer";
+import UserCard from "./UserCard/UserCard";
 
 type UsersPropsType = {
     users: Array<UserType>,
@@ -41,44 +41,14 @@ const Users: React.FC<UsersPropsType> = ({
             <ul className={classes.usersWrapper} >
                 {
                     users.map((user: UserType) => (
-                        <li className={classes.userCard} key={user.id}>
-                            <Link to={`../profile/${user.id}`}>
-                                <img
-                                    src={user.photos.small || avatar}
-                                    className={classes.avatar}
-                                    alt="User"
-                                />
-                            </Link>
-                            {user.followed
-                                ?
-                                <button
-                                    disabled={haveFollowingInProgress.some((id: number): boolean => id === user.id)}
-                                    className={classes.btn}
-                                    onClick={() => {
-                                        unfollow(user)
-                                    }}
-                                >
-                                    UNFOLLOW
-                                </button>
-                                :
-                                <button
-                                    disabled={haveFollowingInProgress.some((id: number) :boolean => id === user.id)}
-                                    className={classes.btn}
-                                    onClick={() => {
-                                        follow(user)
-                                    }}
-                                >
-                                    FOLLOW
-                                </button>
-                            }
-                            <Link
-                                to={`../dialogs/`}
-                                className={classes.btn}
-                                onClick={() => { startNewDialogFromUsersPage(user.id)}}
-                            > START DIALOG </Link>
-                            <h3>{user.name}</h3>
-                            <p>{user.status}</p>
-                        </li>
+                        <UserCard
+                            key={user.id}
+                            user={user}
+                            follow={follow}
+                            unfollow={unfollow}
+                            haveFollowingInProgress={haveFollowingInProgress}
+                            startNewDialogFromUsersPage={startNewDialogFromUsersPage}
+                        />
                     ))
                 }
             </ul>

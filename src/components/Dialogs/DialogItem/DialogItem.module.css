@@ -1,6 +1,21 @@
 .dialogItem{
+    display: flex;
     padding: 5px;
     border: black solid 1px;
     margin: 10px;
+    background-color: rgba(0, 0, 225, 0);
     cursor: pointer;
+    transition: all 0.3s;
+}
+
+.dialogItem:hover {
+    transform: scale(1.02, 1.02);
+    background-color: rgba(0, 0, 225, 0.2);
+}
+
+.avatar {
+    height: 100px;
+    width: 100px;
+    border-radius: 5px;
+    margin: 5px 10px 5px 5px;
 }

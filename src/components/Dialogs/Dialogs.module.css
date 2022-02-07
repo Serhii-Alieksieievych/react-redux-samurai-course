@@ -1,26 +1,25 @@
-.dialogs{
-    display: grid;
-    grid-template-columns: 2;
-    grid-template-rows: 2;
-    grid-template-areas: "d m"
-    "f f";
+.dialogs {
+    
+}
+
+.dialogsLists{
+    display: flex;
     background-color: cornflowerblue;
 }
 
 .messages{
-    grid-area: "m";
     display: flex;
     flex-direction: column;
-    width: 100%;
     background-color: burlywood;
+    width: 70%;
 }
 
 .dialogsItems{
-    grid-area: d;
+    width: 30%;
 }
 
 .form {
-    grid-area: f;
     display: flex;
     flex-direction: column;
+    background-color: coral;
 }
