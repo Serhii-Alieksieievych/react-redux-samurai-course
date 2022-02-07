@@ -76,7 +76,7 @@ class UsersAPIComponent extends React.Component<UsersAPIContainerPropsType> {
                 justifyContent: 'center',
                 height: '90vh'
             }}>
-                <Preloader />
+                <Preloader size="350" color="#fff"/>
             </div>
             : <Users
                 users={users}

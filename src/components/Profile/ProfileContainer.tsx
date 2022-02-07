@@ -72,7 +72,7 @@ const ProfileContainer: React.FC<ProfileContainerPropsType> = (props) => {
           height: '90vh'
         }}
       >
-        <Preloader />
+        <Preloader size="350" color="red"/>
       </div>
   )
 }

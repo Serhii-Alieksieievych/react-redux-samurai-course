@@ -16,7 +16,7 @@ const Header :React.FC<PropsType> = ({ email, id, smallAvatarSRC, isFetching, lo
     return (
         <header className={classes.header}>
             <img src="https://key0.cc/images/preview/83810_9affe954e1ae5d956f374d1a3526e6fc.png" alt="logo" className="logo" />
-            {isFetching ? <Preloader /> : id
+            {isFetching ? <Preloader size="50" color="black"/> : id
                 ? <div>
                     {smallAvatarSRC
                         ? <img src={smallAvatarSRC} alt="small_avatar" className={classes.ava} />
