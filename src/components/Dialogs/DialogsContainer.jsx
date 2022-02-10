@@ -1,5 +1,14 @@
 import Dialogs from "./Dialogs";
-import { changeNewMessage, refreshDialogs, refreshMessages, sendMessage } from "../../Redux/dialogs-reducer";
+import {
+    changeNewMessage,
+    deleteMessage,
+    restoreMessage,
+    refreshDialogs,
+    refreshMessages,
+    sendMessage,
+    setMessageToSpam,
+    getMessagesNewestThan
+} from "../../Redux/dialogs-reducer";
 import { connect } from "react-redux";
 import { withAuthRedirect } from "../../hoc/withAuthRedirect";
 import { compose } from "redux";
@@ -11,6 +20,8 @@ const mapStateToProps = (state) => (
         dialogs: getDialogsSelector(state),
         currentMessage: getCurrentMessageSelector(state),
         currentDialog: state.dialogsPage.currentDialog,
+        dialogInDeletingProgressId: state.dialogsPage.dialogInDeletingProgressId,
+        newMessagesCount: state.dialogsPage.newMessagesCount,
     }
 )
 
@@ -31,11 +42,24 @@ const mapDispatchToProps = (dispatch) => (
 
         refreshMessages: (id) => {
             dispatch(refreshMessages(id))
+        },
+
+        deleteMessage: (id, dialog) => {
+            dispatch(deleteMessage(id, dialog))
         }
     }
 )
 
 export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(mapStateToProps, {
+        sendMessage,
+        changeMessage: changeNewMessage,
+        refreshDialogs,
+        refreshMessages,
+        deleteMessage,
+        setMessageToSpam,
+        restoreMessage,
+        getMessagesNewestThan
+    }),
     withAuthRedirect
 )(Dialogs);

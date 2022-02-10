@@ -1,0 +1,18 @@
+.message{
+    padding: 5px;
+    border: black solid 1px;
+    margin: 10px;
+    background-color: cadetblue;
+}
+
+.myMessage {
+    align-self: flex-start;
+}
+
+.notMyMessage {
+    align-self: flex-end;
+}
+
+.viewed {
+    background-color: coral;
+}

@@ -124,6 +124,7 @@ export const AuthAPI = {
     },
     setMessageToSpam( messageId ){
         return instance.post(`dialogs/messages/${messageId}/spam`, { body: messageId }).then(resp => {
+            console.log(resp.data)
             return resp.data
         })
     },
@@ -136,10 +137,13 @@ export const AuthAPI = {
         return instance.put(
             `dialogs/messages/${messageId}/restore`,
             { messageId }
-        ).then(resp => resp.data)
+        ).then(resp => {
+            return resp.data
+        })
     },
     getMessagesNewestThan( userId, date ){
         return instance.get(`dialogs/${userId}/messages/new?newerThen=${date}`).then(resp => {
+            console.log(resp.data)
             return resp.data
         })
     },
