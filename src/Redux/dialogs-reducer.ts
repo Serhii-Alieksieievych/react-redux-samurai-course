@@ -102,7 +102,7 @@ export const refreshMessages = (dialog: DialogType) : any => async (dispatch: Di
 export const getMessagesNewestThan = (id: number, date:string): any => async (dispatch: Dispatch): Promise<void> => {
     let data = await dialogsApi.getMessagesNewestThan(id, date)
     let newMessagesCount = await dialogsApi.getCountNewMessages()
-    await dispatch({ type: REFRESH_MESSAGES, messages: data, newMessagesCount })
+    await dispatch({ type: REFRESH_MESSAGES, messages: { items: data, totalCount: 0, error: null }, newMessagesCount })
 }
 
 export const sendMessage = (payload: [DialogType, string]) => async (dispatch:Dispatch) => {

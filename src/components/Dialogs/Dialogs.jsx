@@ -44,12 +44,12 @@ const Dialogs = ({
                             getMessagesNewestThan={getMessagesNewestThan}
                             currentDialog={currentDialog}
                         />}
-                    {dialogInDeletingProgressId
+                    {/*dialogInDeletingProgressId
                         && <RestoreProposition
                             restoreMessage={restoreMessage}
                             dialogInDeletingProgressId={dialogInDeletingProgressId}
                             currentDialog={currentDialog}
-                        />}
+                    />*/}
                     {messages.items.map(message => <Message
                         key={message.id}
                         message={message}
