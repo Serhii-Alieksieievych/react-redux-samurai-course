@@ -45,22 +45,22 @@ export const updateProfileInfo = (profileInfo: ProfileInfoType) => async (dispat
     dispatch(setProfile(null))
 }
 
-export const sendProfilePhoto = (photo : string) => {
+export const sendProfilePhoto = (photo : string, id : number) => {
     return async (dispatch: any) => {
         const response = await ProfileAPI.sendPhoto(photo);
-        dispatch(setProfile(21473))
+        dispatch(setProfile(id))
     }
 }
 
 export const setProfile = (id: number | null) => async (dispatch: any) => {
     dispatch(toggleFetching(true))
-    const userId = id ? id : 21473;
+    const userId = id;
     const data = await ProfileAPI.getProfileData(userId)
     dispatch(setProfileInfo(data))
 }
 
 export const getStatus = (id : number | null) => async (dispatch: any) => {
-    const userId = id ? id : 21473;
+    const userId = id;
     const data = await ProfileAPI.getStatus(userId)
         dispatch(setStatus(data))
 }

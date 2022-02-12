@@ -6,7 +6,14 @@ import { useState } from "react";
 import CloseButton from "../../../common/CloseButton/CloseButton";
 import { Link } from "react-router-dom";
 
-const AvatarBlock = ({ isOwner, avatarSrc, sendProfilePhoto, profileInfo, startNewDialogFromUsersPage, ...props}) => {
+const AvatarBlock = ({
+  isOwner,
+  avatarSrc,
+  sendProfilePhoto,
+  profileInfo,
+  startNewDialogFromUsersPage,
+  currentUserId,
+  ...props}) => {
   const [photoInEditMode, setPhotoInEditMode] = useState(false);
   const [newPhoto, setNewPhoto] = useState(null); 
 
@@ -20,7 +27,7 @@ const AvatarBlock = ({ isOwner, avatarSrc, sendProfilePhoto, profileInfo, startN
   }
 
   const sendNewPhoto = () => {
-    sendProfilePhoto(newPhoto)
+    sendProfilePhoto(newPhoto, currentUserId)
     setNewPhoto(null)
     setPhotoInEditMode(false)
   }

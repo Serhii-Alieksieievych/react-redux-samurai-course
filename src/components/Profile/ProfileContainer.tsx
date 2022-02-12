@@ -31,8 +31,9 @@ export type ProfileContainerPropsType = {
         small: (string | null),
         large: (string | null)
       }
-    }
+    },
   },
+  currentUserId: number,
   status: string,
   setProfile:(userId: number)=> void,
   getStatus: (userId: number)=> void,
@@ -58,8 +59,8 @@ const ProfileContainer: React.FC<ProfileContainerPropsType> = (props) => {
   let isOwner = !props.params.userId;
   useEffect(()=>{
     let { userId } = props.params;
-    props.setProfile(userId)
-    props.getStatus(userId)
+    props.setProfile(userId ? userId : props.currentUserId)
+    props.getStatus(userId ? userId : props.currentUserId)
   },[props.params.userId])
   return (
     props.profileInfo.data
@@ -80,6 +81,7 @@ const ProfileContainer: React.FC<ProfileContainerPropsType> = (props) => {
 const mapStateToProps = (state :AppStateType) => ({
   profileInfo: getProfileInfoSelector(state),
   status: getStatusSelector(state),
+  currentUserId: state.auth.id,
 })
 
 export default  compose(
