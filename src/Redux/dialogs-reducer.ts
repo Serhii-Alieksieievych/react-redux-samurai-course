@@ -1,5 +1,7 @@
 import { Dispatch } from "redux";
 import { dialogsApi } from "../api/api";
+import { ThunkAction } from "redux-thunk";
+import { AppStateType } from "./redux-store";
 
 const CHANGE_NEW_MESSAGE = 'CHANGE-NEW-MESSAGE';
 const REFRESH_DIALOGS = 'REFRESH-DIALOGS';
@@ -11,12 +13,21 @@ const END_DELETING = 'END-DELETING';
 
 type StartDeletingType = {type: typeof START_DELETING, id: number}
 type EndDeletingType = {type: typeof END_DELETING}
+type SetCurrentDialogType = {type: typeof SET_CURRENT_DIALOG, dialog :DialogType | null}
 //type SetNewMessagesCountType = {type: typeof SET_NEW_MESSAGES_COUNT, count:number}
 type ChangeNewMessageType = { type: typeof CHANGE_NEW_MESSAGE, text: string }
 type RefreshDialogsType = { type: typeof REFRESH_DIALOGS, dialogs: Array<DialogType>, newMessagesCount:number }
 
+type MessagesType = { items: Array<any>, totalCount: number, error: Array<any> | null }
+type RefreshMessagesType = { type: typeof REFRESH_MESSAGES, messages: MessagesType, newMessagesCount: number }
+type ActionsTypes = StartDeletingType | EndDeletingType | ChangeNewMessageType | RefreshDialogsType | SetCurrentDialogType | RefreshMessagesType
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes> 
+
+const refreshDialogsAC  = (dialogs: DialogType[], newMessagesCount: number) :RefreshDialogsType => ({ type: REFRESH_DIALOGS, dialogs, newMessagesCount })
+
 export const startDeleting = (id: number) :StartDeletingType => ({ type: START_DELETING, id: id})
 export const endDeleting = () :EndDeletingType => ({ type: END_DELETING })
+const refreshMessagesAC = (messages: MessagesType, newMessagesCount: number) :RefreshMessagesType=>({ type: REFRESH_MESSAGES, messages, newMessagesCount })
 
 export type DialogType = {
     hasNewMessages: boolean,
@@ -52,23 +63,23 @@ const initialState = {
     newMessagesCount: 0,
 };
 
-export const refreshDialogs = () :any => async (dispatch: Dispatch):Promise<void> => {
-    let data = await dialogsApi.getDialogs()
+export const refreshDialogs = () :ThunkType => async (dispatch):Promise<void> => {
+    let dialogs = await dialogsApi.getDialogs()
     let newMessagesCount = await dialogsApi.getCountNewMessages()
-    dispatch({type: REFRESH_DIALOGS, dialogs: data, newMessagesCount})
+    dispatch(refreshDialogsAC(dialogs, newMessagesCount))
 }
 
-/*export const refreshNewMessagesCount = (): any => async (dispatch:Dispatch) :Promise<void> => {
+/*export const refreshNewMessagesCount = (): ThunkType => async (dispatch:Dispatch) :Promise<void> => {
     let data = await dialogsApi.getCountNewMessages()
     dispatch(setNewMessagesCount(data))
 }*/
 
-export const setMessageToSpam = (id: number, dialog: DialogType) : any => async (dispatch:Dispatch) : Promise<void> => {
+export const setMessageToSpam = (id: number, dialog: DialogType): ThunkType => async (dispatch) : Promise<void> => {
     let data =await dialogsApi.setMessageToSpam(id)
     dispatch(refreshMessages(dialog))
 }
 
-export const deleteMessage = (id: number, dialog:DialogType) :any => async (dispatch: Dispatch) :Promise<void> => {
+export const deleteMessage = (id: number, dialog: DialogType): ThunkType => async (dispatch) :Promise<void> => {
     dispatch(startDeleting(id))
     setTimeout(() => {
         dispatch(endDeleting())
@@ -77,13 +88,13 @@ export const deleteMessage = (id: number, dialog:DialogType) :any => async (disp
     dispatch(refreshMessages(dialog))
 }
 
-export const restoreMessage = (id: number, dialog:DialogType) : any => async (dispatch: Dispatch) :Promise<void>=> {
+export const restoreMessage = (id: number, dialog: DialogType): ThunkType => async (dispatch) :Promise<void>=> {
     const data = await dialogsApi.restoreMessage(id);
     dispatch(refreshMessages(dialog))
     dispatch(endDeleting())
 }
 
-export const startNewDialogFromUsersPage = (id: number) => async (dispatch: Dispatch): Promise<void> => {
+export const startNewDialogFromUsersPage = (id: number): ThunkType=> async (dispatch): Promise<void> => {
     await dialogsApi.startChattngWithUser(id)
     let data = await dialogsApi.getDialogs()
     let dialog = await data.find((dialog: DialogType)=> dialog.id === id)
@@ -91,29 +102,28 @@ export const startNewDialogFromUsersPage = (id: number) => async (dispatch: Disp
     dispatch(refreshDialogs())
 }
 
-export const refreshMessages = (dialog: DialogType) : any => async (dispatch: Dispatch):Promise<void> => {
+export const refreshMessages = (dialog: DialogType): ThunkType => async (dispatch):Promise<void> => {
     dispatch(setCurrentDialog(dialog))
-    let data = await dialogsApi.getMessages(dialog.id)
+    let messages = await dialogsApi.getMessages(dialog.id)
     let newMessagesCount = await dialogsApi.getCountNewMessages()
-    await dispatch({type: REFRESH_MESSAGES, messages: data, newMessagesCount})
+    await dispatch(refreshMessagesAC(messages, newMessagesCount))
     dispatch(refreshDialogs())
 }
 
-export const getMessagesNewestThan = (id: number, date:string): any => async (dispatch: Dispatch): Promise<void> => {
+export const getMessagesNewestThan = (id: number, date: string): ThunkType => async (dispatch): Promise<void> => {
     let data = await dialogsApi.getMessagesNewestThan(id, date)
     let newMessagesCount = await dialogsApi.getCountNewMessages()
     await dispatch({ type: REFRESH_MESSAGES, messages: { items: data, totalCount: 0, error: null }, newMessagesCount })
 }
 
-export const sendMessage = (payload: [DialogType, string]) => async (dispatch:Dispatch) => {
+export const sendMessage = (payload: [DialogType, string]): ThunkType => async (dispatch) => {
     let data = await dialogsApi.sendMessage(payload[0].id, payload[1])
     await dialogsApi.startChattngWithUser(payload[0].id)
     dispatch(refreshMessages(payload[0]))
 }
 
-export const setCurrentDialog=(dialog:DialogType|null)=> {
-    return {type: SET_CURRENT_DIALOG, dialog}
-}
+export const setCurrentDialog=(dialog:DialogType|null) :SetCurrentDialogType => ({type: SET_CURRENT_DIALOG, dialog})
+
 const dialogsReducer = (state :InitialStateType = initialState, action: any) :InitialStateType => {
     switch (action.type) {
         case START_DELETING:

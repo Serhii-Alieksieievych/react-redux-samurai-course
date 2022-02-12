@@ -1,4 +1,8 @@
+import { type } from "os";
 import { AuthAPI, ProfileAPI, securityAPI } from "../api/api";
+import { AppStateType } from "./redux-store";
+import { ThunkAction } from "redux-thunk";
+import { AuthFormDataType } from "../types/AuthTypes";
 
 const SET_AUTH = 'SET_AUTH';
 const SET_SMALL_AVATAR = 'SET_SMALL_AVATAR';
@@ -53,6 +57,9 @@ type TogleIsFetchingType = {
         isFetching: boolean,
     }
 }
+type ActionsTypes = TogleIsFetchingType | SetSmallAvatarType | SetAuthUserDataType
+    | ResetAuthUserDataType | HadErrType | LogoutType | LoginType | SetCaptchaUrlType
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes> 
 
 const setCaptchaUrl = (captchaUrl :string) :SetCaptchaUrlType => ({type: SET_CAPTCHA_URL, captchaUrl})
 export const login = (userId :number) :LoginType => ({type: LOGIN, userId})
@@ -95,7 +102,7 @@ export const toggleIsFetching = (isFetching: boolean) :TogleIsFetchingType => ({
 })
 
 
-export const loginTC = (formData :any) => async (dispatch :any)=> {
+export const loginTC = (formData: AuthFormDataType) :ThunkType => async (dispatch)=> {
     const response = await AuthAPI.login(formData)
     if (response.data.resultCode === 0) {
         dispatch(login(response.data.data.userId))
@@ -108,16 +115,16 @@ export const loginTC = (formData :any) => async (dispatch :any)=> {
         return response.data.messages[0]
     }
 }
-export const getCaptchaUrl = () => async (dispatch :any) => {
+export const getCaptchaUrl = () :ThunkType => async (dispatch) => {
     const data = await securityAPI.getCaptchaUrl();
     const captchaUrl = data.url;
     dispatch(setCaptchaUrl(captchaUrl))
 }
-export const logoutTC = () => async (dispatch : any) => {
+export const logoutTC = () :ThunkType => async (dispatch) => {
     const data = await AuthAPI.logoutAxios()
     dispatch(resetAuthUserData())
 }
-export const checkAutorization = () => (dispatch :any) => {
+export const checkAutorization = (): ThunkType => (dispatch) => {
     return AuthAPI.getAuthStatus().then(data => {
         const isLogged = data.resultCode === 0 ? true : false;
         const { id, login, email } = data.data;

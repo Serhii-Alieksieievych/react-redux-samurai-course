@@ -1,5 +1,8 @@
+import { Dispatch } from "redux";
+import { ThunkAction } from "redux-thunk";
 import { UsersAPI, FollowAPI } from "../api/api";
 import { UserType, SetCurrentPageType, ToggleFollowingStatusType } from "../types/UsersTypes";
+import { AppStateType } from "./redux-store";
 
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
@@ -25,6 +28,8 @@ type UnfollowType = { type: typeof UNFOLLOW, id: number }
 type SetStateType = { type: typeof SET_STATE, users: Array<UserType>, totalCount: number }
 type ToggleIsFetchingType = { type: typeof TOGGLE_FETCHING_STATUS, isFetching: boolean }
 
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes> 
+
 export const follow = (id: number) :FollowType => ({ type: FOLLOW, id: id })
 export const unfollow = (id: number) :UnfollowType => ({ type: UNFOLLOW, id: id })
 export const setState = (users: Array<UserType>, totalCount: number) :SetStateType=> (
@@ -36,14 +41,15 @@ export const toggleIsFetching = (isFetching: boolean) :ToggleIsFetchingType => (
 )
 export const toggleFollowingStatus = (id: number) :ToggleFollowingStatusType => ({ type: TOGGLE_FOLLOWING_STATUS, id })
 
-export const getUsers = (currentPage = 1) => async (dispatch: any) => {
+export const getUsers = (currentPage = 1)
+    :ThunkType => async (dispatch: Dispatch<ActionsTypes>, getState: () => AppStateType) => {
     dispatch(toggleIsFetching(true))
     dispatch(setCurrentPage(currentPage))
     const data = await UsersAPI.getUsers(currentPage)
     dispatch(toggleIsFetching(false))
     dispatch(setState(data.items, data.totalCount))
 };
-export const followTC = (user: UserType) => async (dispatch: any) => {
+export const followTC = (user: UserType) :ThunkType => async (dispatch) => {
     dispatch(toggleFollowingStatus(user.id))
     const data = await FollowAPI.followAxios(user)
     if (data.resultCode === 0) {
@@ -51,7 +57,7 @@ export const followTC = (user: UserType) => async (dispatch: any) => {
     }
     dispatch(toggleFollowingStatus(user.id))
 }
-export const unfollowTC = (user: UserType) => async (dispatch: any) => {
+export const unfollowTC = (user: UserType) :ThunkType => async (dispatch) => {
     dispatch(toggleFollowingStatus(user.id))
     const data = await FollowAPI.unfollowAxios(user)
     if (data.resultCode === 0) {
