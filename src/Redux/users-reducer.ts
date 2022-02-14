@@ -1,6 +1,7 @@
 import { Dispatch } from "redux";
 import { ThunkAction } from "redux-thunk";
 import { UsersAPI, FollowAPI } from "../api/api";
+import { ResultCodeEnum } from "../types/ApiTypes";
 import { UserType, SetCurrentPageType, ToggleFollowingStatusType } from "../types/UsersTypes";
 import { AppStateType } from "./redux-store";
 
@@ -50,16 +51,16 @@ export const getUsers = (currentPage = 1)
     dispatch(setState(data.items, data.totalCount))
 };
 export const followTC = (user: UserType) :ThunkType => async (dispatch) => {
-    dispatch(toggleFollowingStatus(user.id))
-    const data = await FollowAPI.followAxios(user)
-    if (data.resultCode === 0) {
+    await dispatch(toggleFollowingStatus(user.id))
+    const data = await FollowAPI.followAxios(user.id)
+    if (data.resultCode === ResultCodeEnum.Success) {
         dispatch(follow(user.id))
     }
     dispatch(toggleFollowingStatus(user.id))
 }
 export const unfollowTC = (user: UserType) :ThunkType => async (dispatch) => {
-    dispatch(toggleFollowingStatus(user.id))
-    const data = await FollowAPI.unfollowAxios(user)
+    await dispatch(toggleFollowingStatus(user.id))
+    const data = await FollowAPI.unfollowAxios(user.id)
     if (data.resultCode === 0) {
         dispatch(unfollow(user.id))
     }

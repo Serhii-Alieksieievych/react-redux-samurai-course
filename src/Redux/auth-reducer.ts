@@ -3,6 +3,8 @@ import { AuthAPI, ProfileAPI, securityAPI } from "../api/api";
 import { AppStateType } from "./redux-store";
 import { ThunkAction } from "redux-thunk";
 import { AuthFormDataType } from "../types/AuthTypes";
+import { ResultCodeEnum } from "../types/ApiTypes";
+import { Dispatch } from "react";
 
 const SET_AUTH = 'SET_AUTH';
 const SET_SMALL_AVATAR = 'SET_SMALL_AVATAR';
@@ -102,17 +104,17 @@ export const toggleIsFetching = (isFetching: boolean) :TogleIsFetchingType => ({
 })
 
 
-export const loginTC = (formData: AuthFormDataType) :ThunkType => async (dispatch)=> {
-    const response = await AuthAPI.login(formData)
-    if (response.data.resultCode === 0) {
-        dispatch(login(response.data.data.userId))
-        const data = await response.data;
+export const loginTC = (formData: AuthFormDataType) => async (dispatch: Dispatch<any>)=> {
+    const data = await AuthAPI.login(formData)
+    console.log(data)
+    if (data.resultCode === ResultCodeEnum.Success) {
+        dispatch(login(data.data.userId))
         dispatch(checkAutorization())
-    } else if (response.data.resultCode === 10){
+    } else if (data.resultCode === 10){
         dispatch(getCaptchaUrl())
     } else {
         dispatch(hadErr(null))
-        return response.data.messages[0]
+        return data.messages[0]
     }
 }
 export const getCaptchaUrl = () :ThunkType => async (dispatch) => {
@@ -121,17 +123,17 @@ export const getCaptchaUrl = () :ThunkType => async (dispatch) => {
     dispatch(setCaptchaUrl(captchaUrl))
 }
 export const logoutTC = () :ThunkType => async (dispatch) => {
-    const data = await AuthAPI.logoutAxios()
+    const data = await AuthAPI.logout()
     dispatch(resetAuthUserData())
 }
 export const checkAutorization = (): ThunkType => (dispatch) => {
     return AuthAPI.getAuthStatus().then(data => {
-        const isLogged = data.resultCode === 0 ? true : false;
+        const isLogged = data.resultCode === ResultCodeEnum.Success ? true : false;
         const { id, login, email } = data.data;
         if (isLogged) dispatch(setAuthUserData(isLogged, id, email, login))
         return id;
-    }).then(id => {
-        ProfileAPI.getProfileData(id).then(data => {
+    }).then((id: number) => {
+        id && ProfileAPI.getProfileData(id).then(data => {
             dispatch(setSmallAvatar(data.photos.small))
             dispatch(toggleIsFetching(false))
         })

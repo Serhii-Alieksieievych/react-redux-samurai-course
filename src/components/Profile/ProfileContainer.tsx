@@ -10,9 +10,10 @@ import { useEffect } from "react";
 import Preloader from "../common/Preloader/Preloader";
 import { AppStateType } from "../../Redux/redux-store";
 import { startNewDialogFromUsersPage } from "../../Redux/dialogs-reducer";
+import { ProfileInfoType } from "../../types/ProfileTypes";
 
 export type ProfileContainerPropsType = {
-  profileInfo:{data:any}
+  profileInfo:{data:ProfileInfoType}
   params: {
     userId: number,
     lookingForAJob: boolean,
@@ -59,8 +60,8 @@ const ProfileContainer: React.FC<ProfileContainerPropsType> = (props) => {
   let isOwner = !props.params.userId;
   useEffect(()=>{
     let { userId } = props.params;
-    props.setProfile(userId ? userId : props.currentUserId)
-    props.getStatus(userId ? userId : props.currentUserId)
+    props.currentUserId && props.setProfile(userId ? userId : props.currentUserId)
+    props.currentUserId && props.getStatus(userId ? userId : props.currentUserId)
   },[props.params.userId])
   return (
     props.profileInfo.data
@@ -93,6 +94,6 @@ export default  compose(
     updateStatus,
     sendProfilePhoto,
     updateProfileInfo,
-    startNewDialogFromUsersPage
+    startNewDialogFromUsersPage, 
   })
 )(ProfileContainer)

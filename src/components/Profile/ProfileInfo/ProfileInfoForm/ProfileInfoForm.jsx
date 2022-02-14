@@ -5,11 +5,12 @@ import { requiredField } from "../../../../utils/validators/validator";
 import { CustomField } from "../../../common/CustomForms/CustomForms";
 import CloseButton from "../../../common/CloseButton/CloseButton";
 
-const ProfileInfoForm = ({ profileInfo, updateProfileInfo, disableEditMode }) => {
+const ProfileInfoForm = ({ currentUserId, profileInfo, updateProfileInfo, disableEditMode, setProfile }) => {
 
   const onSubmit = (values) => {
     updateProfileInfo(values).then(()=>{
       disableEditMode()
+      setProfile(currentUserId)
     })
   }
 

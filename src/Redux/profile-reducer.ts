@@ -1,6 +1,7 @@
-import { ProfileAPI } from "../api/api";
+import { AuthAPI, ProfileAPI } from "../api/api";
 import { ThunkAction } from "redux-thunk";
 import { AppStateType } from "./redux-store";
+import { ProfileInfoType } from "../types/ProfileTypes";
 
 const CHANGE_POST = 'CHANGE-POST';
 const ADD_POST = 'ADD-POST';
@@ -12,26 +13,7 @@ type SetStatusType = {type: typeof SET_STATUS, status: string}
 type IsFetchingType = { type: typeof TOGGLE_FETCHING, isFetching: boolean}
 type AddPostType = { type : typeof ADD_POST, text: string }
 type ChangePostType = { type : typeof CHANGE_POST, text: string }
-type ProfileInfoType = {
-    userId: number,
-    lookingForAJob: boolean,
-    lookingForAJobDescription: string,
-    fullName: string,
-    contacts: {
-        github: string,
-        vk: string,
-        facebook: string,
-        instagram: string,
-        twitter: string,
-        website: string,
-        youtube: string,
-        mainLink: string,
-        photos: {
-            small: (string | null),
-            large: (string | null)
-        }
-    }
-}
+
 type SetProfileInfoType = { type: typeof SET_PROFILE_INFO, profileInfo: ProfileInfoType }
 type ActionsTypes = SetStatusType | IsFetchingType | AddPostType | ChangePostType | SetProfileInfoType
 type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes> 
@@ -48,27 +30,26 @@ export const setProfileInfo = (profileInfo :ProfileInfoType) :SetProfileInfoType
 
 export const updateProfileInfo = (profileInfo: ProfileInfoType) :ThunkType => async (dispatch)=> {
     const response = await ProfileAPI.setProfileData(profileInfo)
-    dispatch(setProfile(null))
 }
 
-export const sendProfilePhoto = (photo : string, id : number) :ThunkType=> {
+export const sendProfilePhoto = (photo : File, id : number) :ThunkType=> {
     return async (dispatch) => {
+        //const avtorisationData = await AuthAPI.getAuthStatus();
         const response = await ProfileAPI.sendPhoto(photo);
         dispatch(setProfile(id))
     }
 }
 
-export const setProfile = (id: number | null): ThunkType => async (dispatch) => {
+export const setProfile = (id: number): ThunkType => async (dispatch) => {
     dispatch(toggleFetching(true))
-    const userId = id;
-    const data = await ProfileAPI.getProfileData(userId)
+    const data = await ProfileAPI.getProfileData(id)
     dispatch(setProfileInfo(data))
 }
 
-export const getStatus = (id: number | null): ThunkType => async (dispatch) => {
+export const getStatus = (id: number): ThunkType => async (dispatch) => {
     const userId = id;
-    const data = await ProfileAPI.getStatus(userId)
-        dispatch(setStatus(data))
+    const status = await ProfileAPI.getStatus(userId)
+        dispatch(setStatus(status))
 }
 
 export const updateStatus = (status: string): ThunkType  => async (dispatch) => {

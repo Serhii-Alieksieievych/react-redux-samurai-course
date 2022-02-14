@@ -7,7 +7,7 @@ import ProfileInfoText from "./ProfileInfoText/ProfileInfoText";
 import AvatarBlock from "./AvatarBlock/AvatarBlock";
 import Preloader from "../../common/Preloader/Preloader";
 
-const ProfileInfo = ({ isOwner, profileInfo, updateProfileInfo, sendProfilePhoto, ...props}) => {
+const ProfileInfo = ({ isOwner, currentUserId, profileInfo, setProfile, updateProfileInfo, sendProfilePhoto, ...props}) => {
   const [inEditMode, setInEditMode] = useState(false);
   const enebleEditMode = () => {
     setInEditMode(true);
@@ -25,6 +25,7 @@ const ProfileInfo = ({ isOwner, profileInfo, updateProfileInfo, sendProfilePhoto
               sendProfilePhoto={sendProfilePhoto}
               isOwner={isOwner}
               profileInfo={profileInfo}
+              currentUserId={currentUserId}
               {...props}
             />
           : <Preloader/>
@@ -39,6 +40,8 @@ const ProfileInfo = ({ isOwner, profileInfo, updateProfileInfo, sendProfilePhoto
                 profileInfo={profileInfo}
                 updateProfileInfo={updateProfileInfo}
                 disableEditMode={disableEditMode}
+                setProfile={setProfile}
+                currentUserId={currentUserId}
               />
             : <div className={classes.profileInfoText}><ProfileInfoText
                 {...props}

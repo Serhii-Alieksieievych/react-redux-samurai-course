@@ -37,7 +37,9 @@ const UserCard: React.FC<UserCardPropsType> = ({
                     disabled={haveFollowingInProgress.some((id: number): boolean => id === user.id)}
                     className={classes.btn}
                     onClick={() => {
+                        console.log(haveFollowingInProgress)
                         unfollow(user)
+                        console.log(haveFollowingInProgress)
                     }}
                 >
                     UNFOLLOW

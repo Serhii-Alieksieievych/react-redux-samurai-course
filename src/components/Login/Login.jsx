@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { Form, Field } from 'react-final-form'
+import { Form, Field, FormRenderProps } from 'react-final-form'
 import { withBackAuthRedirect } from "../../hoc/withAuthRedirect";
 import { loginTC } from "../../Redux/auth-reducer";
 import { requiredField } from "../../utils/validators/validator";
@@ -70,7 +70,7 @@ const Login = ({ loginTC, userId, hadErr, captchaUrl }) => {
     const onSubmit = (formData) => {
         setErrorMessage('')
         if (!userId)loginTC(formData).then(
-            err => {
+            (err) => {
                 setErrorMessage(err)
             }
         )

@@ -2,6 +2,7 @@ import { Dispatch } from "redux";
 import { dialogsApi } from "../api/api";
 import { ThunkAction } from "redux-thunk";
 import { AppStateType } from "./redux-store";
+import { DialogType, MessagesType } from "../types/DialogsTypes";
 
 const CHANGE_NEW_MESSAGE = 'CHANGE-NEW-MESSAGE';
 const REFRESH_DIALOGS = 'REFRESH-DIALOGS';
@@ -13,12 +14,11 @@ const END_DELETING = 'END-DELETING';
 
 type StartDeletingType = {type: typeof START_DELETING, id: number}
 type EndDeletingType = {type: typeof END_DELETING}
-type SetCurrentDialogType = {type: typeof SET_CURRENT_DIALOG, dialog :DialogType | null}
+type SetCurrentDialogType = {type: typeof SET_CURRENT_DIALOG, dialog :DialogType | undefined}
 //type SetNewMessagesCountType = {type: typeof SET_NEW_MESSAGES_COUNT, count:number}
 type ChangeNewMessageType = { type: typeof CHANGE_NEW_MESSAGE, text: string }
 type RefreshDialogsType = { type: typeof REFRESH_DIALOGS, dialogs: Array<DialogType>, newMessagesCount:number }
 
-type MessagesType = { items: Array<any>, totalCount: number, error: Array<any> | null }
 type RefreshMessagesType = { type: typeof REFRESH_MESSAGES, messages: MessagesType, newMessagesCount: number }
 type ActionsTypes = StartDeletingType | EndDeletingType | ChangeNewMessageType | RefreshDialogsType | SetCurrentDialogType | RefreshMessagesType
 type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes> 
@@ -29,18 +29,6 @@ export const startDeleting = (id: number) :StartDeletingType => ({ type: START_D
 export const endDeleting = () :EndDeletingType => ({ type: END_DELETING })
 const refreshMessagesAC = (messages: MessagesType, newMessagesCount: number) :RefreshMessagesType=>({ type: REFRESH_MESSAGES, messages, newMessagesCount })
 
-export type DialogType = {
-    hasNewMessages: boolean,
-    id: number,
-    lastDialogActivityDate: string,
-    lastUserActivityDate: string,
-    newMessagesCount: number,
-    photos?:{
-        small?:string,
-        large?:string,
-    },
-    userName: string,
-}
 type InitialStateType = typeof initialState;
 
 export const changeNewMessage = (text: string) :ChangeNewMessageType => (
@@ -116,13 +104,13 @@ export const getMessagesNewestThan = (id: number, date: string): ThunkType => as
     await dispatch({ type: REFRESH_MESSAGES, messages: { items: data, totalCount: 0, error: null }, newMessagesCount })
 }
 
-export const sendMessage = (payload: [DialogType, string]): ThunkType => async (dispatch) => {
+export const sendMessage = (payload: Array<any>): ThunkType => async (dispatch) => {
     let data = await dialogsApi.sendMessage(payload[0].id, payload[1])
     await dialogsApi.startChattngWithUser(payload[0].id)
     dispatch(refreshMessages(payload[0]))
 }
 
-export const setCurrentDialog=(dialog:DialogType|null) :SetCurrentDialogType => ({type: SET_CURRENT_DIALOG, dialog})
+const setCurrentDialog=(dialog:DialogType | undefined) :SetCurrentDialogType => ({type: SET_CURRENT_DIALOG, dialog})
 
 const dialogsReducer = (state :InitialStateType = initialState, action: any) :InitialStateType => {
     switch (action.type) {
