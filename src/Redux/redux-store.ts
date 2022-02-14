@@ -13,7 +13,6 @@ let rootReducer = combineReducers({
     auth: authReducer,
     form: formReducer,
 })
-
 type RootReducerType = typeof rootReducer;
 export type AppStateType = ReturnType<RootReducerType>
 

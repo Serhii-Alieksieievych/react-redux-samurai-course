@@ -106,7 +106,6 @@ export const toggleIsFetching = (isFetching: boolean) :TogleIsFetchingType => ({
 
 export const loginTC = (formData: AuthFormDataType) => async (dispatch: Dispatch<any>)=> {
     const data = await AuthAPI.login(formData)
-    console.log(data)
     if (data.resultCode === ResultCodeEnum.Success) {
         dispatch(login(data.data.userId))
         dispatch(checkAutorization())
