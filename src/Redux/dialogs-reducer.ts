@@ -2,7 +2,7 @@ import { Dispatch } from "redux";
 import { dialogsApi } from "../api/api";
 import { ThunkAction } from "redux-thunk";
 import { AppStateType } from "./redux-store";
-import { DialogType, MessagesType } from "../types/DialogsTypes";
+import { DialogType, MessagesType, MessageType } from "../types/DialogsTypes";
 
 const CHANGE_NEW_MESSAGE = 'CHANGE-NEW-MESSAGE';
 const REFRESH_DIALOGS = 'REFRESH-DIALOGS';
@@ -104,7 +104,7 @@ export const getMessagesNewestThan = (id: number, date: string): ThunkType => as
     await dispatch({ type: REFRESH_MESSAGES, messages: { items: data, totalCount: 0, error: null }, newMessagesCount })
 }
 
-export const sendMessage = (payload: Array<any>): ThunkType => async (dispatch) => {
+export const sendMessage = (payload: [DialogType, string]): ThunkType => async (dispatch) => {
     let data = await dialogsApi.sendMessage(payload[0].id, payload[1])
     await dialogsApi.startChattngWithUser(payload[0].id)
     dispatch(refreshMessages(payload[0]))

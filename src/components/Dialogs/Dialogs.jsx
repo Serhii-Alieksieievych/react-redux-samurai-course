@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
 import classes from './Dialogs.module.css';
-import DialogReduxForm from "./DialogForm/DialogForm";
 import CurrentDialogInfo from "./CurrentDialogInfo/CurrentDialogInfo";
 import RestoreProposition from "./RestoreProposition/RestoreProposition"
 import FiltrationForm from "./FiltrationForm/FiltrationForm";
+import DialogForm from "./DialogForm/DialogForm";
 
 const Dialogs = ({
     sendMessage,
@@ -59,10 +59,7 @@ const Dialogs = ({
                     />)}
                 </div>
             </div>
-            <DialogReduxForm className={classes.dialogsForm} onSubmit={(data)=>{
-                sendMessage([currentDialog, data.message])
-                data.message=''
-            }} />
+            <DialogForm sendMessage={sendMessage} currentDialog={currentDialog}/>
         </div>
     )
 }

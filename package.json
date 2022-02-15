@@ -26,7 +26,8 @@
     "reselect": "^4.1.5",
     "svg-loaders-react": "^2.2.1",
     "typescript": "^4.5.5",
-    "web-vitals": "^1.1.2"
+    "web-vitals": "^1.1.2",
+    "yup": "^0.32.11"
   },
   "scripts": {
     "start": "react-scripts start",

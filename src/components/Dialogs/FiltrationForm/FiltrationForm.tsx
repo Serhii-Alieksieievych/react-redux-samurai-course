@@ -1,17 +1,17 @@
 import React from 'react';
-import { Formik } from 'formik';
+import { Formik, FormikErrors, FormikValues } from 'formik';
 
 import { useFormik } from "formik";
 
-interface Errors {
+interface Values {
     day?: string
     month?: string
     year?: string
 }
 
 const FiltrationForm :React.FC<any> = ({getMessagesNewestThan, currentDialog}) => {
-    const validate = (values: any) => {
-        const errors : Errors = {};
+    const validate = (values: Values) => {
+        const errors : FormikErrors<Values> = {};
         if (!values.year) {
             errors.year = 'Required';
         } else if (values.year.length !== 4) {
@@ -33,7 +33,7 @@ const FiltrationForm :React.FC<any> = ({getMessagesNewestThan, currentDialog}) =
         day: ''
     },
     validate,
-    onSubmit: values => {
+    onSubmit: (values: Values) => {
         const fullDate = `${values.year}-${values.month}-${values.day}`
         getMessagesNewestThan(currentDialog.id, fullDate)
         formik.setSubmitting(false)
