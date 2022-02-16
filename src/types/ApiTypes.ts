@@ -1,6 +1,6 @@
 import { strictEqual } from "assert";
 import { DialogType, IMessageFromFilterByDateType, MessagesType, MessageType } from "./DialogsTypes";
-import { ProfileInfoType } from "./ProfileTypes";
+import { IProfileInfo, IProfileInfoResponse } from "./ProfileTypes";
 import { UserType } from "./UsersTypes"
 
 export enum ResultCodeEnum {
@@ -46,7 +46,7 @@ export interface IGetProfileDataRequest {
 }
 
 export interface IGetProfileDataResponse extends ICommonResponse {
-    data: ProfileInfoType
+    data: IProfileInfo
 }
 
 export interface ISetProfileDataResponse extends ICommonResponse {

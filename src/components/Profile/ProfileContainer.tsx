@@ -10,10 +10,10 @@ import { useEffect } from "react";
 import Preloader from "../common/Preloader/Preloader";
 import { AppStateType } from "../../Redux/redux-store";
 import { startNewDialogFromUsersPage } from "../../Redux/dialogs-reducer";
-import { ProfileInfoType } from "../../types/ProfileTypes";
+import { IProfileInfo } from "../../types/ProfileTypes";
 
 export type ProfileContainerPropsType = {
-  profileInfo:{data:ProfileInfoType}
+  profileInfo:{data:IProfileInfo}
   params: {
     userId: number,
     lookingForAJob: boolean,

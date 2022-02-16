@@ -1,7 +1,7 @@
 import { AuthAPI, ProfileAPI } from "../api/api";
 import { ThunkAction } from "redux-thunk";
 import { AppStateType } from "./redux-store";
-import { ProfileInfoType } from "../types/ProfileTypes";
+import { IProfileInfo, IProfileInfoRequest, IProfileInfoResponse } from "../types/ProfileTypes";
 
 const CHANGE_POST = 'CHANGE-POST';
 const ADD_POST = 'ADD-POST';
@@ -14,7 +14,7 @@ type IsFetchingType = { type: typeof TOGGLE_FETCHING, isFetching: boolean}
 type AddPostType = { type : typeof ADD_POST, text: string }
 type ChangePostType = { type : typeof CHANGE_POST, text: string }
 
-type SetProfileInfoType = { type: typeof SET_PROFILE_INFO, profileInfo: ProfileInfoType }
+type SetProfileInfoType = { type: typeof SET_PROFILE_INFO, profileInfo: IProfileInfo }
 type ActionsTypes = SetStatusType | IsFetchingType | AddPostType | ChangePostType | SetProfileInfoType
 type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes> 
 
@@ -26,9 +26,9 @@ export const changePost = (text: string) : ChangePostType=> ({
     type: CHANGE_POST,
     text: text,
 })
-export const setProfileInfo = (profileInfo :ProfileInfoType) :SetProfileInfoType => ({type: SET_PROFILE_INFO, profileInfo})
+export const setProfileInfo = (profileInfo :IProfileInfo) :SetProfileInfoType => ({type: SET_PROFILE_INFO, profileInfo})
 
-export const updateProfileInfo = (profileInfo: ProfileInfoType) :ThunkType => async (dispatch)=> {
+export const updateProfileInfo = (profileInfo: IProfileInfoRequest) :ThunkType => async (dispatch)=> {
     const response = await ProfileAPI.setProfileData(profileInfo)
 }
 

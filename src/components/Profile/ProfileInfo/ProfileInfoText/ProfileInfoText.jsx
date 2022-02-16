@@ -12,6 +12,15 @@ const ProfileInfoText = ({ profileInfo, isOwner, enebleEditMode }) => {
     lookingForAJobDescription
   } = profileInfo.data;
 
+  const {
+    github,
+    facebook,
+    instagram,
+    twitter,
+    website,
+    youtube,
+    mainLink
+  } = contacts;
   
   return (
     <div className={classes.profileInfoText}>
@@ -22,13 +31,13 @@ const ProfileInfoText = ({ profileInfo, isOwner, enebleEditMode }) => {
       {lookingForAJob && <div>Profession skills:{lookingForAJobDescription} </div>}
       <div className={classes.linksWrapper}>
         <h3>Контакты</h3>
-        <a href={contacts.github}>Github</a>
-        <a href={contacts.facebook}>Facebook</a>
-        <a href={contacts.instagram}>Instagram</a>
-        <a href={contacts.twitter}>Twitter</a>
-        <a href={contacts.website}>website</a>
-        <a href={contacts.youtube}>Youtube</a>
-        <a href={contacts.mainLink}>MainLink</a>
+        {github && <a href={github}>Github</a>}
+        {facebook && <a href={facebook}>Facebook</a>}
+        {instagram && <a href={instagram}>Instagram</a>}
+        {twitter && <a href={twitter}>Twitter</a>}
+        {website && <a href={website}>website</a>}
+        {youtube && <a href={youtube}>Youtube</a>}
+        {mainLink && <a href={mainLink}>MainLink</a>}
       </div>
     </div>
   )

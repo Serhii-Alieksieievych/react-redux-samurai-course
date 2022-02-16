@@ -54,7 +54,7 @@ export const followTC = (user: UserType) :ThunkType => async (dispatch) => {
     await dispatch(toggleFollowingStatus(user.id))
     const data = await FollowAPI.followAxios(user.id)
     if (data.resultCode === ResultCodeEnum.Success) {
-        dispatch(follow(user.id))
+        await dispatch(follow(user.id))
     }
     dispatch(toggleFollowingStatus(user.id))
 }

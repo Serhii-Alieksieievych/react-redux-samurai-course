@@ -26,7 +26,7 @@ import {
     ISetPhotoResponse,
 } from '../types/ApiTypes';
 import { AuthFormDataType } from '../types/AuthTypes';
-import { ProfileInfoType } from '../types/ProfileTypes';
+import { IProfileInfoRequest } from '../types/ProfileTypes';
 
 const instance = axios.create({
     withCredentials: true,
@@ -69,7 +69,7 @@ export const ProfileAPI = {
             })
         )
     },
-    setProfileData(data: ProfileInfoType) {
+    setProfileData(data: IProfileInfoRequest) {
         return (
             instance.put<ISetProfileDataResponse>(`/profile/`, data).then(resp => resp.data)
         )

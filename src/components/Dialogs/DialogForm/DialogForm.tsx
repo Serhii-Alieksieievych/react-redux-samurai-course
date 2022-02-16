@@ -22,7 +22,7 @@ const DialogForm = ({sendMessage, currentDialog}: PropsType) => {
             }}
         >
             <Form>
-                <Field name="message" component="textarea" />
+                <Field name="message" as="textarea" />
                 <ErrorMessage name="message" />
                 <button type="submit">Submit</button>
             </Form>

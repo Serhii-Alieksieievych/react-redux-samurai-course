@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import classes from './UserCard.module.css';
 import avatar from "../../../assets/img/avatars/small_ava.jpg"
 import { Link } from "react-router-dom";
@@ -21,7 +21,7 @@ const UserCard: React.FC<UserCardPropsType> = ({
     follow,
     startNewDialogFromUsersPage,
 }) => {
-
+    useEffect(()=>{},[haveFollowingInProgress])
     return (
         <li className={classes.userCard} key={user.id}>
             <Link to={`../profile/${user.id}`}>
@@ -37,9 +37,7 @@ const UserCard: React.FC<UserCardPropsType> = ({
                     disabled={haveFollowingInProgress.some((id: number): boolean => id === user.id)}
                     className={classes.btn}
                     onClick={() => {
-                        console.log(haveFollowingInProgress)
                         unfollow(user)
-                        console.log(haveFollowingInProgress)
                     }}
                 >
                     UNFOLLOW
